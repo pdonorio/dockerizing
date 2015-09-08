@@ -1,5 +1,5 @@
 # A base for python 3 projects
-# $ cd python/py3base; docker build -t pdonorio_py3kbase;
+# $ cd python/py3base; docker build -t pdonorio_py3kbase .
 
 FROM ubuntu:14.04
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@gmail.com>"
@@ -24,5 +24,3 @@ RUN apt-get install -y -q \
     libcurl4-openssl-dev
 
 RUN pip3 install --upgrade setuptools pip
-
-VOLUME /data
