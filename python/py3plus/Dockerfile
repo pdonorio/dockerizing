@@ -1,6 +1,6 @@
-# Python3 notebook & pydata stack via continuum conda
+# Python3 notebook + pydata stack + profile, extensions and slideshows
 
-# Stack
+# Stack with no hub:
 # $ cd python/py3base; docker build -t pdonorio_py3kbase .
 # $ cd ../py3notebook; docker build -t pdonorio_py3knb .
 # $ cd ../py3dataconda; docker build -t pdonorio_py3data .
@@ -8,7 +8,8 @@
 
 # Run notebook with /opt/start
 
-FROM pdonorio_py3data
+FROM pdonorio/py3dataconda
+#FROM pdonorio_py3data
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@gmail.com>"
 
 ###############################
@@ -29,8 +30,12 @@ RUN python3 -m IPython.external.mathjax
 ADD jupyconf.ipy /tmp/script.ipy
 RUN ipython /tmp/script.ipy
 
-# # Live slideshows
+# Live slideshows
 RUN wget https://github.com/pdonorio/RISE/archive/master.tar.gz \
     && tar xvzf *.gz && cd *master && \
     python3 setup.py install \
     && rm -rf /tmp/*
+
+# Run directly the jupyter server
+CMD [ "/bin/bash", "-c", "/opt/start" ]
+# Standard port is 8888
