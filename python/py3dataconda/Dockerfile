@@ -1,13 +1,14 @@
 # Python3 notebook & pydata stack via continuum conda
 
-# Stack
+# Stack with no hub:
 # $ cd python/py3base; docker build -t pdonorio_py3kbase .
 # $ cd ../py3notebook; docker build -t pdonorio_py3knb .
 # $ cd ../py3dataconda; docker build -t pdonorio_py3data .
 
 # Run notebook with /opt/start
 
-FROM pdonorio_py3knb
+FROM pdonorio/jupy3k
+#FROM pdonorio_py3knb
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@gmail.com>"
 
 ###############################
