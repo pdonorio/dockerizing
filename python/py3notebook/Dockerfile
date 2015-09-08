@@ -1,10 +1,11 @@
 # Python3 ipython and notebook server
 
-# Stack
+# Stack with no hub:
 # $ cd python/py3base; docker build -t pdonorio_py3kbase .
 # $ cd ../py3notebook; docker build -t pdonorio_py3knb .
 
-FROM pdonorio_py3kbase
+FROM pdonorio/py3kbase
+# FROM pdonorio_py3kbase
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@gmail.com>"
 
 # More dependencies - notebooks are very heavy in those
