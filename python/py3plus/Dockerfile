@@ -14,7 +14,7 @@ MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@gmail.com>"
 
 ###############################
 # Other python packages
-RUN pip3 install jsonschema
+RUN pip3 install jsonschema neomodel
 # Create a basic profile for current user
 RUN ipython3 profile create
 # Link extensions from ipython to jupyter
@@ -35,6 +35,17 @@ RUN wget https://github.com/pdonorio/RISE/archive/master.tar.gz \
     && tar xvzf *.gz && cd *master && \
     python3 setup.py install \
     && rm -rf /tmp/*
+
+###############################
+# Connect to graph databases
+
+# COULD HAVE BEEN DONE BETTER
+
+# CONDA_ENV_PATH = /opt/miniconda/envs/py3k
+ENV myscript /tmp/script.sh
+RUN echo "source /opt/miniconda/bin/activate $CONDAENV" > $myscript
+RUN echo "\$CONDA_ENV_PATH/bin/pip install neomodel" >> $myscript
+RUN bash $myscript
 
 # Run directly the jupyter server
 CMD [ "/bin/bash", "-c", "/opt/start" ]
