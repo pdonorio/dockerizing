@@ -32,6 +32,9 @@ RUN conda install -y -n $CONDAENV jupyter ipywidgets \
         openpyxl xlrd
 RUN conda clean -y -t
 
+# Needed by matplotlib inline
+RUN apt-get install -y python-qt4
+
 ###############################
 # Script: Activate virtualenv and launch notebook
 ENV STARTSCRIPT /opt/start

@@ -1,0 +1,9 @@
+
+# check JUPYTER_CONFIG_DIR
+from __future__ import print_function
+from jupyter_core.paths import jupyter_config_dir, jupyter_config_path
+
+#print(jupyter_config_dir())
+dir = jupyter_config_dir()
+! mkdir -p {dir}
+print("Be safe, now we have dir", dir, "for sure")
