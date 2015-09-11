@@ -7,4 +7,11 @@
 FROM pdonorio/py3kbase
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@gmail.com>"
 
-RUN pip3 install flask flask-restful flask-security
+VOLUME /opt
+
+# Install the micro framework and important plugins
+RUN pip3 install flask \
+    flask-restful flask-security flask-cors
+
+# Save the full stack of necessary libraries somewhere inside the container
+RUN pip3 freeze > /opt/requirements.txt
