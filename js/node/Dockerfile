@@ -26,10 +26,10 @@ RUN npm install --global bower
 RUN npm install --global gulp
 RUN npm install --global yo
 RUN npm install -g generator-gulp-angular
-
-# Fix issues with gulp angular installs as non root
-RUN apt-get install -y g++ gyp
-RUN npm install -g bcrypt
+# # Fix issues with gulp angular installs as non root
+# RUN apt-get install -y g++ gyp
+# RUN npm install -g bcrypt
+# ##  The real problem is here https://github.com/socketio/socket.io/issues/2228
 RUN npm cache clean
 
 # Development user (bower and yeoman do not really work well as root...)
