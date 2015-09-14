@@ -1,14 +1,12 @@
 # Python3 notebook & pydata stack via continuum conda
 
 # Stack with no hub:
-# $ cd python/py3base; docker build -t pdonorio_py3kbase .
-# $ cd ../py3notebook; docker build -t pdonorio_py3knb .
-# $ cd ../py3dataconda; docker build -t pdonorio_py3data .
+# $ cd python/py3base; docker build -t pdonorio/py3kbase .
+# $ cd ../py3dataconda; docker build -t pdonorio/py3dataconda .
 
 # Run notebook with /opt/start
 
-FROM pdonorio/jupy3k
-#FROM pdonorio_py3knb
+FROM pdonorio/py3kbase
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@gmail.com>"
 
 ###############################
@@ -25,12 +23,16 @@ RUN chmod -R a+rx /opt/miniconda
 WORKDIR /tmp
 RUN conda update --quiet --yes conda
 ENV CONDAENV "py3k"
-RUN conda create -y -n $CONDAENV python=3 ipython
-RUN conda install -y -n $CONDAENV jupyter ipywidgets \
-        numpy scipy pandas matplotlib seaborn bokeh scikit-learn sympy \
-        six pip sqlalchemy cython pyzmq statsmodels \
-        theano tornado jinja2 sphinx pygments nose readline \
-        openpyxl xlrd
+RUN conda create -y -n $CONDAENV python=3
+RUN conda install -y -n $CONDAENV \
+        pip jupyter ipython notebook ipywidgets \
+        six sqlalchemy cython pyzmq statsmodels \
+        theano tornado jinja2 sphinx pygments nose readline openpyxl xlrd
+RUN conda install -y -n $CONDAENV \
+        numpy scipy pandas scikit-learn sympy \
+        matplotlib seaborn
+# Remove bokeh until it is supported by python 3.5?
+        #bokeh
 RUN conda clean -y -t
 
 # Needed by matplotlib inline
