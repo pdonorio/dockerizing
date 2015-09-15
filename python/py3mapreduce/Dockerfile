@@ -5,25 +5,19 @@
 # $ cd ../py3dataconda; docker build -t pdonorio/py3dataconda .
 # $ cd ../py3mapreduce; docker build -t pdonorio/py3mapreduce .
 
-FROM pdonorio/jupy3k
-#FROM pdonorio/py3dataconda
+#FROM pdonorio/jupy3k
+FROM pdonorio/py3dataconda
+
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@gmail.com>"
 
 ###############################
 # Add mrjob from Yelp
-WORKDIR /tmp
+WORKDIR /opt
+# Dependencies
+RUN apt-get install -y libyaml-dev
+# Install and not remove from installation!
+RUN git clone https://github.com/Yelp/mrjob \
+    && cd mrjob && $CONDA_ACTIVATE && which pip && pip install -e .
 
-## For CONDA, when python 3.5 will work!!
-
-# # CONDA_ENV_PATH = /opt/miniconda/envs/py3k
-# ENV myscript /tmp/script.sh
-# RUN echo "source /opt/miniconda/bin/activate $CONDAENV" > $myscript
-# RUN echo "\$CONDA_ENV_PATH/bin/pip install -e ." >> $myscript
-
-RUN git clone https://github.com/Yelp/mrjob && cd mrjob && \
-# # COULD HAVE BEEN DONE BETTER
-#     bash $myscript \
-    pip3 install -e . \
-    && cd .. && rm -r mrjob
-
+###############################
 WORKDIR /data
