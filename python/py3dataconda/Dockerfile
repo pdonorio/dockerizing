@@ -53,9 +53,7 @@ RUN conda install -y -n $MY_CONDA_PY3ENV \
         theano tornado jinja2 sphinx pygments nose readline openpyxl xlrd
 RUN conda install -y -n $MY_CONDA_PY3ENV \
         numpy scipy pandas scikit-learn sympy \
-        matplotlib seaborn
-# Remove bokeh until it is supported by python 3.5?
-        #bokeh
+        matplotlib seaborn bokeh
 RUN conda clean -y -t
 
 ###############################
