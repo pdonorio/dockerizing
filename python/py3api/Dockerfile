@@ -11,7 +11,8 @@ VOLUME /opt
 
 # Install the micro framework and important plugins
 RUN pip3 install flask \
-    flask-restful flask-security flask-cors
+    flask-restful flask-security flask-cors \
+    simplejson
 
 # Save the full stack of necessary libraries somewhere inside the container
 RUN pip3 freeze > /opt/requirements.txt
