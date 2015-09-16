@@ -17,7 +17,9 @@ WORKDIR /opt
 RUN apt-get install -y libyaml-dev
 # Install and not remove from installation!
 RUN git clone https://github.com/Yelp/mrjob \
-    && cd mrjob && $CONDA_ACTIVATE && which pip && pip install -e .
+    && cd mrjob && $CONDA_ACTIVATE && pip install -e .
+# Extra libs (jinja2 is already requested from ipython)
+RUN $CONDA_ACTIVATE && pip install plumbum
 
 ###############################
 WORKDIR /data
