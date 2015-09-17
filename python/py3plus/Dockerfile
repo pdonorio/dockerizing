@@ -14,39 +14,29 @@ MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@gmail.com>"
 
 ###############################
 # Other python packages
-RUN pip3 install jsonschema neomodel
+RUN $CONDA_ACTIVATE && pip install jsonschema neomodel
 # Create a basic profile for current user
-RUN ipython3 profile create
+RUN $CONDA_ACTIVATE && ipython3 profile create
 # Link extensions from ipython to jupyter
 RUN mkdir -p $HOME/.local/share/jupyter
 RUN ln -s $HOME/.ipython/nbextensions $HOME/.local/share/jupyter/nbextensions
 
 # Add offline use of mathjax
-RUN python3 -m IPython.external.mathjax
+RUN $CONDA_ACTIVATE && python3 -m IPython.external.mathjax
 # RUN wget https://github.com/mathjax/MathJax/archive/2.5.3.zip
 # RUN python3 -m IPython.external.mathjax 2.5.3.zip
 
 # check JUPYTER_CONFIG_DIR
 ADD jupyconf.ipy /tmp/script.ipy
-RUN ipython /tmp/script.ipy
+RUN $CONDA_ACTIVATE && ipython3 /tmp/script.ipy
 
 # Live slideshows
 RUN wget https://github.com/pdonorio/RISE/archive/master.tar.gz \
     && tar xvzf *.gz && cd *master && \
-    python3 setup.py install \
+    $CONDA_ACTIVATE && python3 setup.py install \
     && rm -rf /tmp/*
 
 ###############################
-# Connect to graph databases
-
-# COULD HAVE BEEN DONE BETTER
-
-# CONDA_ENV_PATH = /opt/miniconda/envs/py3k
-ENV myscript /tmp/script.sh
-RUN echo "source /opt/miniconda/bin/activate $CONDAENV" > $myscript
-RUN echo "\$CONDA_ENV_PATH/bin/pip install neomodel" >> $myscript
-RUN bash $myscript
-
 # Run directly the jupyter server
 CMD [ "/bin/bash", "-c", "/opt/start" ]
 # Standard port is 8888
