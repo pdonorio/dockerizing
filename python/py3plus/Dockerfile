@@ -13,8 +13,6 @@ FROM pdonorio/py3dataconda
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@gmail.com>"
 
 ###############################
-# Other python packages
-RUN $CONDA_ACTIVATE && pip install jsonschema neomodel
 # Create a basic profile for current user
 RUN $CONDA_ACTIVATE && ipython3 profile create
 # Link extensions from ipython to jupyter
@@ -35,6 +33,10 @@ RUN wget https://github.com/pdonorio/RISE/archive/master.tar.gz \
     && tar xvzf *.gz && cd *master && \
     $CONDA_ACTIVATE && python3 setup.py install \
     && rm -rf /tmp/*
+
+# Other python packages
+RUN $CONDA_ACTIVATE && pip install \
+    jsonschema neomodel ipython-cypher networkx
 
 ###############################
 # Run directly the jupyter server
