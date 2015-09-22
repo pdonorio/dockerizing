@@ -5,7 +5,7 @@
 
 ## Using google as example: https://hub.docker.com/r/google/nodejs/~/dockerfile/
 #FROM ubuntu:15.04
-FROM google/debian:wheezy
+FROM debian:jessie
 
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@gmail.com>"
 
@@ -15,10 +15,8 @@ RUN apt-get update -y && apt-get install --no-install-recommends -y -q \
 ENV TERM xterm
 
 # Install NodeJs 4
-RUN mkdir /nodejs && curl \
-    https://nodejs.org/dist/latest/node-v4.0.0-linux-x64.tar.gz \
-    | tar xvzf - -C /nodejs --strip-components=1
-ENV PATH $PATH:/nodejs/bin
+RUN curl --silent --location https://deb.nodesource.com/setup_4.x | bash -
+RUN apt-get install --yes nodejs
 
 # Install development packages
 RUN npm install --global npm@latest
@@ -35,9 +33,10 @@ RUN npm cache clean
 # Development user (bower and yeoman do not really work well as root...)
 ENV MAINDIR /devjs
 ENV HOMEDIR /home/dev
-VOLUME $MAINDIR
+RUN mkdir -p $MAINDIR
 ENV NEWUSER developer
 RUN mkdir -p $HOMEDIR
-RUN useradd $NEWUSER -d $HOMEDIR && chown -R $NEWUSER $HOMEDIR
+RUN useradd $NEWUSER -d $HOMEDIR \
+    && chown -R $NEWUSER $HOMEDIR && chown -R $NEWUSER $MAINDIR
 USER $NEWUSER
 WORKDIR $MAINDIR
