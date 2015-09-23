@@ -1,0 +1,75 @@
+master:
+    image: gettyimages/spark:1.3.1-hadoop-2.4
+    command: /usr/spark/bin/spark-class org.apache.spark.deploy.master.Master
+    hostname: master
+    expose:
+        - 7001
+        - 7002
+        - 7003
+        - 7004
+        - 7005
+        - 7006
+        - 7077
+        - 6066
+    ports:
+        - 4040:4040
+        - 6066:6066
+        - 7077:7077
+        - 8080:8080
+
+worker:
+    image: gettyimages/spark:1.3.1-hadoop-2.4
+    command: /usr/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://master:7077
+    hostname: worker
+    environment:
+        SPARK_WORKER_CORES: 2
+        SPARK_WORKER_MEMORY: 1g
+        SPARK_WORKER_PORT: 8881
+        SPARK_WORKER_WEBUI_PORT: 8081
+    links:
+        - master
+        - client
+    expose:
+        - 7012
+        - 7013
+        - 7014
+        - 7015
+        - 7016
+        - 8881
+    ports:
+        - 8081:8081
+    volumes:
+        - ./data:/data
+
+client:
+#https://hub.docker.com/r/jupyter/pyspark-notebook/
+    image: jupyter/pyspark-notebook
+    hostname: ipyspark
+    environment:
+        MASTER: spark://master:7077
+        # USE_HTTPS: yes
+        PASSWORD: mytest
+    #command: sleep 123456789
+    ports:
+        - 80:8888
+    links:
+        - master
+    volumes:
+        - ./data:/data
+
+# zeppelin:
+#   image: dylanmei/zeppelin:latest
+#   hostname: zeppelin
+#   environment:
+#     ZEPPELIN_PORT: 8090
+#     ZEPPELIN_JAVA_OPTS: "-Dspark.driver.port=5432"
+#     MASTER: spark://master:7077
+#   links:
+#     - master
+#   expose:
+#     - 5432
+#   ports:
+#     - 8090:8090
+#     - 8091:8091
+#   volumes:
+#     - ./data:/zeppelin/data
