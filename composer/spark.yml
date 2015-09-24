@@ -1,8 +1,17 @@
+#ERROR Remoting: org.apache.spark.deploy.ApplicationDescription; local class incompatible: stream classdesc serialVersionUID = -7685200927816255400, local class serialVersionUID = 2596819202403185464
+
+###############################################
+## A SPARK standalone cluster
+# https://spark.apache.org/docs/latest/spark-standalone.html
+
 master:
     image: gettyimages/spark:1.3.1-hadoop-2.4
     command: /usr/spark/bin/spark-class org.apache.spark.deploy.master.Master
     hostname: master
     expose:
+        - 4040
+        - 6066
+        #- 7001-7006
         - 7001
         - 7002
         - 7003
@@ -10,11 +19,10 @@ master:
         - 7005
         - 7006
         - 7077
-        - 6066
     ports:
-        - 4040:4040
-        - 6066:6066
-        - 7077:7077
+        # - 4040:4040
+        # - 6066:6066
+        # - 7077:7077
         - 8080:8080
 
 worker:
@@ -43,7 +51,8 @@ worker:
 
 client:
 #https://hub.docker.com/r/jupyter/pyspark-notebook/
-    image: jupyter/pyspark-notebook
+    image: jupyter/all-spark-notebook
+    #image: jupyter/pyspark-notebook
     hostname: ipyspark
     environment:
         MASTER: spark://master:7077
@@ -55,21 +64,7 @@ client:
     links:
         - master
     volumes:
+        - ./data/nbs:/home/jovyan/work
         - ./data:/data
 
-# zeppelin:
-#   image: dylanmei/zeppelin:latest
-#   hostname: zeppelin
-#   environment:
-#     ZEPPELIN_PORT: 8090
-#     ZEPPELIN_JAVA_OPTS: "-Dspark.driver.port=5432"
-#     MASTER: spark://master:7077
-#   links:
-#     - master
-#   expose:
-#     - 5432
-#   ports:
-#     - 8090:8090
-#     - 8091:8091
-#   volumes:
-#     - ./data:/zeppelin/data
+# SCALA?
