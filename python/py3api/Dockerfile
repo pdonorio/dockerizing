@@ -10,9 +10,9 @@ MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@gmail.com>"
 VOLUME /opt
 
 # Install the micro framework and important plugins
-RUN pip3 install flask \
+RUN pip install flask \
     flask-restful flask-security flask-cors \
     simplejson
 
 # Save the full stack of necessary libraries somewhere inside the container
-RUN pip3 freeze > /opt/requirements.txt
+RUN pip freeze > /opt/api_requirements.txt

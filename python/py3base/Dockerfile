@@ -34,3 +34,6 @@ RUN pip install \
     prettytable \
     snowballstemmer colorama uuid
     # progressbar # Not working
+
+# Save the full stack of necessary libraries somewhere inside the container
+RUN pip freeze > /opt/base_requirements.txt
