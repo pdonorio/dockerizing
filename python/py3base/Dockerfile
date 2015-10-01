@@ -29,7 +29,7 @@ RUN pip3 install --upgrade setuptools pip
 
 # http://blog.yhathq.com/posts/11-python-libraries-you-might-not-know.html
 RUN pip install \
-    tracestack \
+    wrapt tracestack \
     plumbum wget \
     prettytable \
     snowballstemmer colorama uuid
