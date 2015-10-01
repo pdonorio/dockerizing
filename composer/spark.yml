@@ -5,17 +5,29 @@
 
 master:
     image: pdonorio/spark
-    command: spark-class org.apache.spark.deploy.master.Master
     hostname: master
+    # no command is necessary, as the image start as a master
+    #command: bash -c "/bootmaster.sh"
+    command: sleep 1234567890
     environment:
         SPARK_MASTER_HOST: master
+    expose:
+        - 7077
     ports:
         - 8080:8080
 
 worker:
     image: pdonorio/spark
-    command: spark-class org.apache.spark.deploy.worker.Worker spark://master:7077
     hostname: worker
+
+    # overloading command to be a slave
+    #command: bash -c "/bootslave.sh"
+    command: sleep 1234567890
+
+    # # Works with docker compose 1.5
+    # #https://github.com/Homebrew/homebrew/issues/41665
+    # command: "$${BSWORKER}"
+
     environment:
         SPARK_WORKER_CORES: 2
         SPARK_WORKER_MEMORY: 1g
@@ -34,7 +46,6 @@ worker:
 ####################################################
 #https://hub.docker.com/r/jupyter/pyspark-notebook/
 client:
-    #command: sleep 123456789
     image: pdonorio/nbspark
 # SCALA?
     #image: jupyter/pyspark-notebook
