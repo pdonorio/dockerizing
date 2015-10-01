@@ -34,24 +34,28 @@ RUN echo "spark.master\tspark://master:7077" \
 # where slave datanodes will search for
 ENV MYHOSTNAME master
 # Set the right name for configuration
-RUN sed "s/MYHOSTNAME/$HOSTNAME/" \
+RUN sed "s/HOSTNAME/$MYHOSTNAME/" \
     $HADOOP_PREFIX/etc/hadoop/core-site.xml.template > \
     $HADOOP_PREFIX/etc/hadoop/core-site.xml
 # Bootstraps for master and workers
 ENV BSMASTER /bootmaster.sh
 # sed -i.bak 's/value>1/value>0/'g $HADOOP_PREFIX/etc/hadoop/hdfs-site.xml
 # yes Y | hdfs namenode -format
-RUN echo "cd /tmp" > $BSMASTER && \
-    echo "nohup spark-class org.apache.spark.deploy.master.Master &" \
+RUN echo "#!/bin/bash" > $BSMASTER && \
+    echo "spark-class org.apache.spark.deploy.master.Master &\nsleep 5" \
         >> $BSMASTER && \
-    echo "sleep 3" >> $BSMASTER && \
-    echo "nohup hdfs namenode &" >> $BSMASTER && \
-    echo "nohup hdfs secondarynamenode &" >> $BSMASTER && \
-    echo "nohup hdfs datanode &" >> $BSMASTER
+    echo "echo 'starting namenode'" >> $BSMASTER && \
+    echo "hdfs namenode > /dev/null 2>&1 &\nsleep 5" >> $BSMASTER && \
+    echo "echo 'starting secondary namenode'" >> $BSMASTER && \
+    echo "hdfs secondarynamenode > /dev/null 2>&1 &\nsleep 5" >> $BSMASTER && \
+    echo "echo 'starting datanode'" >> $BSMASTER && \
+    echo "hdfs dfsadmin -safemode leave && hdfs datanode > /dev/null 2>&1" \
+        >> $BSMASTER
 # service ssh start && $HADOOP_PREFIX/sbin/start-dfs.sh
 # hdfs dfsadmin -safemode leave
 ENV BSWORKER /bootslave.sh
-RUN echo "spark-class org.apache.spark.deploy.worker.Worker spark://master:7077" > $BSWORKER
+RUN echo "#!/bin/bash" > $BSWORKER && \
+    echo "spark-class org.apache.spark.deploy.worker.Worker spark://master:7077" >> $BSWORKER
 RUN chmod +x $BSWORKER $BSMASTER
 
 #EXPOSE 7077

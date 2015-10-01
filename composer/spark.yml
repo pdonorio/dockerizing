@@ -6,60 +6,52 @@
 master:
     image: pdonorio/spark
     hostname: master
-    # no command is necessary, as the image start as a master
-    #command: bash -c "/bootmaster.sh"
-    command: sleep 1234567890
+    command: bash -c "/bootmaster.sh"
     environment:
         SPARK_MASTER_HOST: master
+    # Let other containers slave reach the hadoop master:
     expose:
         - 7077
     ports:
         - 8080:8080
-
+data:
+    image: busybox
+    volumes:
+        - ./data:/data
 worker:
     image: pdonorio/spark
     hostname: worker
-
-    # overloading command to be a slave
-    #command: bash -c "/bootslave.sh"
-    command: sleep 1234567890
-
-    # # Works with docker compose 1.5
-    # #https://github.com/Homebrew/homebrew/issues/41665
+    command: bash -c "/bootslave.sh"
+    # # This will work with docker compose 1.5
     # command: "$${BSWORKER}"
-
+    # #https://github.com/Homebrew/homebrew/issues/41665
+    volumes_from:
+        - data
     environment:
         SPARK_WORKER_CORES: 2
         SPARK_WORKER_MEMORY: 1g
         SPARK_WORKER_WEBUI_PORT: 8081
-    #SPARK_WORKER_PORT: 8881
     links:
         - master
-        # - client
-    # expose:
-    #     - 8881
     ports:
         - 8081:8081
-    volumes:
-        - ./data:/data
 
 ####################################################
 #https://hub.docker.com/r/jupyter/pyspark-notebook/
 client:
     image: pdonorio/nbspark
-# SCALA?
-    #image: jupyter/pyspark-notebook
     hostname: ipyspark
     environment:
-        #MASTER: spark://master:7077
+        MASTER: spark://master:7077
         # USE_HTTPS: yes
         PASSWORD: mytest
     ports:
         - 80:8888
     links:
         - master
+    volumes_from:
+        - data
     volumes:
         - ./data/nbs:/home/jovyan/work
-        - ./data:/data
 
 ####################################################
