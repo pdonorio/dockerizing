@@ -6,7 +6,7 @@
 master:
     image: pdonorio/spark
     hostname: master
-    command: bash -c "/bootmaster.sh"
+    command: /bootmaster.sh
     environment:
         SPARK_MASTER_HOST: master
     # Let other containers slave reach the hadoop master:
@@ -21,7 +21,7 @@ data:
 worker:
     image: pdonorio/spark
     hostname: worker
-    command: bash -c "/bootslave.sh"
+    command: /bootslave.sh
     # # This will work with docker compose 1.5
     # command: "$${BSWORKER}"
     # #https://github.com/Homebrew/homebrew/issues/41665

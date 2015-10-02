@@ -37,6 +37,9 @@ RUN wget https://github.com/pdonorio/RISE/archive/master.tar.gz \
 # Other python packages
 RUN $CONDA_ACTIVATE && pip install \
     jsonschema neomodel ipython-cypher networkx
+# http://nicolewhite.github.io/neo4j-jupyter/twitter.html
+# https://github.com/nicolewhite/neo4j-jupyter
+    # plotly python-igraph
 
 ###############################
 # Run directly the jupyter server
