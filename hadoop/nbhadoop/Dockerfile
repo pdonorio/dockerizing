@@ -61,9 +61,20 @@ RUN python -m IPython.external.mathjax
 
 ###############################
 # Live slideshows
-RUN wget https://github.com/pdonorio/RISE/archive/master.tar.gz \
+RUN mkdir -p /root/.jupyter/nbconfig && \
+    wget https://github.com/pdonorio/RISE/archive/master.tar.gz \
     && tar xvzf *.gz && cd *master && \
-    python3 setup.py install \
+    python setup.py install
+
+###############################
+# Last fixes
+ENV HADOOP_HOME $HADOOP_PREFIX
+ENV STARTUPSCRIPT /bootme.sh
+RUN echo "#!/bin/bash" > $STARTUPSCRIPT && \
+    echo "/etc/bootstrap.sh &\njupyter notebook --no-browser --ip=0.0.0.0\n" \
+    >> $STARTUPSCRIPT && \
+    chmod +x $STARTUPSCRIPT
+CMD [ "/bootme.sh" ]
 
 # A data directory
 WORKDIR /data
