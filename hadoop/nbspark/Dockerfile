@@ -39,4 +39,5 @@ RUN wget https://github.com/pdonorio/RISE/archive/master.tar.gz \
 ###############################
 # The end
 USER root
+#WORKDIR /home/jovyan/work
 WORKDIR /data

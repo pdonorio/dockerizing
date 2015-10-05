@@ -1,0 +1,69 @@
+
+###########################################
+## Hadoop 2.6 and Jupyter
+
+FROM sequenceiq/hadoop-ubuntu:2.6.0
+MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@gmail.com>"
+
+# Let hadoop be in the path
+ENV PATH $HADOOP_PREFIX/bin:$PATH
+
+###########################################
+# Install all OS dependencies for fully functional notebook server
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update && apt-get install -yq --no-install-recommends \
+    git vim wget build-essential python-dev bzip2 unzip libsm6 \
+    libxml2-dev libxslt1-dev \
+    #ca-certificates \
+    #pandoc texlive-latex-base texlive-latex-extra texlive-fonts-extra texlive-fonts-recommended \
+    #supervisor sudo \
+    && apt-get clean
+
+###########################################
+# Install conda
+ENV CONDA_DIR /opt/conda
+RUN echo 'export PATH=$CONDA_DIR/bin:$PATH' > /etc/profile.d/conda.sh && \
+    wget --quiet \
+    https://repo.continuum.io/miniconda/Miniconda3-3.9.1-Linux-x86_64.sh && \
+    /bin/bash /Miniconda3-3.9.1-Linux-x86_64.sh -b -p $CONDA_DIR && \
+    rm Miniconda3-3.9.1-Linux-x86_64.sh && \
+    $CONDA_DIR/bin/conda install --yes conda==3.14.1
+ENV PATH $CONDA_DIR/bin:$PATH
+
+###########################################
+# Install Python 3 packages
+RUN conda install --yes \
+    scipy pandas matplotlib seaborn scikit-learn bokeh \
+    && conda clean -yt
+
+# Install Jupyter notebook
+RUN conda install --yes \
+    ipython-notebook terminado \
+    && conda clean -yt
+
+# Configure Jupyter
+RUN ipython profile create
+
+###########################################
+# install some other pip libs
+RUN pip install plumbum prettytable howdoi
+
+###############################
+# Add mrjob from Yelp
+WORKDIR /opt
+# Install and not remove from installation!
+RUN git clone https://github.com/Yelp/mrjob \
+    && cd mrjob && pip install -e .
+
+###############################
+# Add offline use of mathjax
+RUN python -m IPython.external.mathjax
+
+###############################
+# Live slideshows
+RUN wget https://github.com/pdonorio/RISE/archive/master.tar.gz \
+    && tar xvzf *.gz && cd *master && \
+    python3 setup.py install \
+
+# A data directory
+WORKDIR /data
