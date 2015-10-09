@@ -46,7 +46,7 @@ RUN ipython profile create
 
 ###########################################
 # install some other pip libs
-RUN pip install plumbum prettytable howdoi
+RUN pip install plumbum howdoi
 
 ###############################
 # Add mrjob from Yelp
