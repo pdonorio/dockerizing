@@ -33,7 +33,7 @@ ENV PATH $CONDA_DIR/bin:$PATH
 ###########################################
 # Install Python 3 packages
 RUN conda install --yes \
-    scipy pandas matplotlib seaborn scikit-learn bokeh \
+    numpy scipy pandas matplotlib seaborn scikit-learn bokeh \
     && conda clean -yt
 
 # Install Jupyter notebook
