@@ -68,12 +68,22 @@ RUN mkdir -p /root/.jupyter/nbconfig && \
 
 ###############################
 # Last fixes
+
+# languages and UTF-8
+RUN apt-get update && apt-get install -y language-pack-en
+ENV LANG en_US.UTF-8
+RUN locale-gen en_US.UTF-8
+RUN dpkg-reconfigure locales
+
+# startup script
 ENV HADOOP_HOME $HADOOP_PREFIX
 ENV STARTUPSCRIPT /bootme.sh
 RUN echo "#!/bin/bash" > $STARTUPSCRIPT && \
     echo "/etc/bootstrap.sh &\njupyter notebook --no-browser --ip=0.0.0.0\n" \
     >> $STARTUPSCRIPT && \
     chmod +x $STARTUPSCRIPT
+ENV TERM xterm
+
 CMD [ "/bootme.sh" ]
 
 # A data directory
