@@ -82,7 +82,14 @@ RUN echo "#!/bin/bash" > $STARTUPSCRIPT && \
     echo "/etc/bootstrap.sh &\njupyter notebook --no-browser --ip=0.0.0.0\n" \
     >> $STARTUPSCRIPT && \
     chmod +x $STARTUPSCRIPT
+
+# Other usefull variables
 ENV TERM xterm
+#ENV HADOOP_VERSION `hadoop version | grep Hadoop | awk '{print $2}'`
+ENV HADOOP_VERSION 2.6.0
+ENV HADOOP_JARS $HADOOP_PREFIX/share/hadoop/tools/lib
+ENV HADOOP_EXAMPLES $HADOOP_PREFIX/share/hadoop/mapreduce/hadoop-mapreduce-examples-${HADOOP_VERSION}.jar
+ENV HADOOP_STREAMING $HADOOP_JARS/hadoop-streaming-${HADOOP_VERSION}.jar
 
 CMD [ "/bootme.sh" ]
 
