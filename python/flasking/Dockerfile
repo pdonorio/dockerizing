@@ -11,7 +11,9 @@ RUN apt-get update && apt-get install -y libpq-dev
 # Connection via sqlalchemy
 RUN pip install --upgrade \
     sqlalchemy psycopg2 \
-    Flask-SQLAlchemy flask_table Flask-WTF WTForms-Alchemy \
+    Flask-SQLAlchemy \
+    flask_table Flask-WTF WTForms-Alchemy \
+    Flask-Login Flask-OpenID \
     gunicorn meinheld
 
 VOLUME /data
