@@ -1,0 +1,8 @@
+master:
+    image: pdonorio/flaskjs
+    volumes:
+        - ./nginx.conf:/etc/nginx/sites-enabled/default
+        - ./uwsgi.ini:/app/uwsgi.ini
+        - ./hello.py:/app/hello.py
+    ports:
+        - 80:80

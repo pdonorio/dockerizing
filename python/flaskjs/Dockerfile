@@ -30,7 +30,13 @@ RUN pip3 install --upgrade setuptools pip
 
 # Install necessary software
 RUN pip3 install --no-cache-dir \
-    flask uwsgi
+    virtualenv uwsgi flask
+
+# Nginx configuration?
+#VOLUME /var/www/html
+RUN mkdir -p /app/logs
+WORKDIR /app
+RUN virtualenv /app/venv && cd /app && . venv/bin/activate && pip install flask
 
 # Start webserver
 EXPOSE 80 443
