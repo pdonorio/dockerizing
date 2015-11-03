@@ -1,8 +1,11 @@
 master:
     image: pdonorio/flaskjs
     volumes:
+        - ./entrypoint.sh:/docker-entrypoint.sh
         - ./nginx.conf:/etc/nginx/sites-enabled/default
-        - ./uwsgi.ini:/app/uwsgi.ini
+        - ./uwsgi.ini:/etc/uwsgi/vassals/uwsgi.ini
+        # - ./uwsgi.ini:/app/uwsgi.ini
+        - ./uwsgi.conf:/etc/init/uwsgi.conf
         - ./hello.py:/app/hello.py
     ports:
         - 80:80

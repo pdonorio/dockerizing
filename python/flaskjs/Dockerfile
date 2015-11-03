@@ -32,12 +32,13 @@ RUN pip3 install --upgrade setuptools pip
 RUN pip3 install --no-cache-dir \
     virtualenv uwsgi flask
 
-# Nginx configuration?
-#VOLUME /var/www/html
+# Uwsgi
 RUN mkdir -p /app/logs
 WORKDIR /app
-RUN virtualenv /app/venv && cd /app && . venv/bin/activate && pip install flask
+RUN virtualenv /app/venv && cd /app && . venv/bin/activate \
+    && pip install flask uwsgi
+RUN mkdir -p /etc/uwsgi/vassals
 
 # Start webserver
 EXPOSE 80 443
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["/docker-entrypoint.sh"]
