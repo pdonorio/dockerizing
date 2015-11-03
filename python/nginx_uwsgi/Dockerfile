@@ -29,21 +29,24 @@ RUN apt-get update && apt-get install -y \
 RUN pip3 install --upgrade setuptools pip
 
 # Install necessary software
-RUN pip3 install --no-cache-dir \
-    virtualenv uwsgi flask
+RUN pip3 install --no-cache-dir virtualenv
+
+# Some confs
+RUN mkdir /app
+WORKDIR /app
+ENV TERM xterm
+
+# Use opt for virtualenv
+RUN mkdir -p /opt
+RUN mkdir -p /var/logs/uswgi
+RUN virtualenv /opt/venv && cd /opt && . venv/bin/activate \
+    && pip install flask uwsgi
 
 # Uwsgi
-RUN mkdir -p /app/logs
-WORKDIR /app
-RUN virtualenv /app/venv && cd /app && . venv/bin/activate \
-    && pip install flask uwsgi
 RUN mkdir -p /etc/uwsgi/vassals
 
-ADD entrypoint.sh /docker-entrypoint.sh
 ADD nginx.conf /etc/nginx/sites-enabled/default
 ADD uwsgi.ini /etc/uwsgi/vassals/uwsgi.ini
-#ADD uwsgi.conf /etc/init/uwsgi.conf
-ENV TERM xterm
 
 # Expecting to find 'run.py' with a flask app inside /app:
 # /app/run.py
@@ -51,6 +54,7 @@ ENV TERM xterm
 # Static content should stay in
 # /app/static
 
-# Start webserver
-EXPOSE 80 443
+# webserver
+ADD entrypoint.sh /docker-entrypoint.sh
 CMD ["/docker-entrypoint.sh"]
+EXPOSE 80 443
