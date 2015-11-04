@@ -32,7 +32,8 @@ RUN pip install \
     wrapt tracestack \
     plumbum wget \
     prettytable \
-    snowballstemmer colorama uuid
+    snowballstemmer colorama uuid \
+    invoke paramiko
     # progressbar # Not working
 
 # Save the full stack of necessary libraries somewhere inside the container
