@@ -13,7 +13,7 @@ RUN pip install --upgrade \
     sqlalchemy psycopg2 \
     Flask-SQLAlchemy \
     flask_table Flask-WTF WTForms-Alchemy \
-    Flask-Login Flask-OpenID \
+    Flask-Login \
     gunicorn meinheld
 
 VOLUME /data
