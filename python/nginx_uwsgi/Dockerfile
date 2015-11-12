@@ -40,19 +40,24 @@ ENV TERM xterm
 RUN mkdir -p /opt
 RUN mkdir -p /var/logs/uswgi
 RUN virtualenv /opt/venv && cd /opt && . venv/bin/activate \
-    && pip install flask uwsgi
+    && pip install flask uwsgi \
+        flask-sqlalchemy flask-login flask-table \
+        flask-wtf wtforms_alchemy
 
 # Uwsgi
 RUN mkdir -p /etc/uwsgi/vassals
+#RUN pip install uwsgi
 
-ADD nginx.conf /etc/nginx/sites-enabled/default
-ADD uwsgi.ini /etc/uwsgi/vassals/uwsgi.ini
+# ###################################################
+# ADD nginx.conf /etc/nginx/sites-enabled/default
+# ADD uwsgi.ini /etc/uwsgi/vassals/uwsgi.ini
 
-# Expecting to find 'run.py' with a flask app inside /app:
-# /app/run.py
+# # Expecting to find 'run.py' with a flask app inside /app:
+# # /app/run.py
 
-# Static content should stay in
-# /app/static
+# # Static content should stay in
+# # /app/static
+# ###################################################
 
 # webserver
 ADD entrypoint.sh /docker-entrypoint.sh
