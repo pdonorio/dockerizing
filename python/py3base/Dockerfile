@@ -19,7 +19,6 @@ RUN dpkg-reconfigure locales
 RUN apt-get update
 RUN apt-get install -y -q \
     build-essential make gcc zlib1g-dev wget git \
-    #python \
     # Python 3
     python3-dev python3-pip python3-sphinx \
     libzmq3-dev sqlite3 libsqlite3-dev pandoc \
@@ -28,13 +27,12 @@ RUN apt-get install -y -q \
 RUN pip3 install --upgrade setuptools pip
 
 # http://blog.yhathq.com/posts/11-python-libraries-you-might-not-know.html
-RUN pip install \
+RUN pip install howdoi \
     wrapt tracestack \
-    plumbum wget \
+    plumbum paramiko invoke wget \
     prettytable \
-    snowballstemmer colorama uuid \
-    invoke paramiko
-    # progressbar # Not working
+    snowballstemmer colorama uuid
+    # Ipython?
 
 # Save the full stack of necessary libraries somewhere inside the container
 RUN pip freeze > /opt/base_requirements.txt
