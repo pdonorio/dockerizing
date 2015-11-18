@@ -45,7 +45,7 @@ RUN virtualenv /opt/venv && cd /opt && . venv/bin/activate \
         flask-wtf wtforms_alchemy
 
 # Uwsgi
-RUN mkdir -p /etc/uwsgi/vassals
+#RUN mkdir -p /etc/uwsgi/vassals
 #RUN pip install uwsgi
 
 # ###################################################
