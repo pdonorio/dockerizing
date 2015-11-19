@@ -33,6 +33,3 @@ RUN pip install howdoi \
     prettytable \
     snowballstemmer colorama uuid
     # Ipython?
-
-# Save the full stack of necessary libraries somewhere inside the container
-RUN pip freeze > /opt/base_requirements.txt

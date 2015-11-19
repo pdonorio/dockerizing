@@ -7,13 +7,8 @@
 FROM pdonorio/py3kbase
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@gmail.com>"
 
-VOLUME /opt
+# Dependencies?
 
 # Install the micro framework and important plugins
-RUN pip install flask pyjwt \
-    flask-restful flask-restplus \
-    flask-sqlalchemy flask-security flask-cors flask-admin\
-    simplejson
-
-# Save the full stack of necessary libraries somewhere inside the container
-RUN pip freeze > /opt/api_requirements.txt
+ADD requirements.txt /opt/apirequ.txt
+RUN pip install -r /opt/apirequ.txt
