@@ -19,16 +19,12 @@ RUN curl --silent --location https://deb.nodesource.com/setup_4.x | bash -
 RUN apt-get install --yes nodejs
 
 # Install development packages
-RUN npm install --global npm@latest
-RUN npm install --global bower
-RUN npm install --global gulp
-RUN npm install --global yo
-RUN npm install -g generator-gulp-angular
-# # Fix issues with gulp angular installs as non root
-# RUN apt-get install -y g++ gyp
-# RUN npm install -g bcrypt
-# ##  The real problem is here https://github.com/socketio/socket.io/issues/2228
-RUN npm cache clean
+RUN npm install --global npm@latest \
+    && npm install --global bower \
+    && npm install --global gulp \
+    && npm install --global yo \
+    && npm install -g generator-gulp-angular \
+    && npm cache clean
 
 # Development user (bower and yeoman do not really work well as root...)
 ENV MAINDIR /devjs
