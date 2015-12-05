@@ -12,3 +12,6 @@ MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@gmail.com>"
 # Install the micro framework and important plugins
 ADD requirements.txt /opt/apirequ.txt
 RUN pip install -r /opt/apirequ.txt
+
+RUN mkdir -p /code
+WORKDIR /code
