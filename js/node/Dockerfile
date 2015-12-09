@@ -36,3 +36,6 @@ RUN useradd $NEWUSER -d $HOMEDIR \
     && chown -R $NEWUSER $HOMEDIR && chown -R $NEWUSER $MAINDIR
 USER $NEWUSER
 WORKDIR $MAINDIR
+
+# Remove bower for asking about statistics...
+RUN yes | bower
