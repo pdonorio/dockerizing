@@ -30,6 +30,6 @@ RUN pip3 install --upgrade setuptools pip
 RUN pip install howdoi \
     wrapt tracestack \
     plumbum paramiko invoke wget \
-    prettytable \
+    prettytable commentjson \
     snowballstemmer colorama uuid
     # Ipython?
