@@ -31,5 +31,6 @@ RUN pip install howdoi \
     wrapt tracestack \
     plumbum paramiko invoke wget \
     prettytable commentjson \
+    tqdm joblib dill \
     snowballstemmer colorama uuid
     # Ipython?
