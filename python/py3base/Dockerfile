@@ -1,10 +1,10 @@
-# A base for python 3 projects
-# $ cd python/py3base; docker build -t pdonorio_py3kbase .
 
-FROM ubuntu:14.04
+# A base for python 3 projects
+FROM ubuntu:15.10
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@gmail.com>"
 
 ENV DEBIAN_FRONTEND noninteractive
+ENV TERM xterm
 
 # Not essential, but wise to set the lang
 # Note: Users with other languages should set this in their derivative image
@@ -23,8 +23,7 @@ RUN apt-get install -y -q \
     python3-dev python3-pip python3-sphinx \
     libzmq3-dev sqlite3 libsqlite3-dev pandoc \
     libcurl4-openssl-dev
-
-RUN pip3 install --upgrade setuptools pip
+RUN pip install --upgrade setuptools pip
 
 # http://blog.yhathq.com/posts/11-python-libraries-you-might-not-know.html
 RUN pip install howdoi \
