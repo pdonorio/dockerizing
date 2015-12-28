@@ -30,7 +30,12 @@ RUN pip3 install --upgrade setuptools pip
 RUN pip install howdoi \
     wrapt tracestack \
     plumbum paramiko invoke wget \
-    prettytable commentjson \
+    prettytable \
     tqdm dill joblib httpie \
     snowballstemmer colorama uuid
+    # commentjson
     # Ipython?
+
+WORKDIR /tmp
+RUN git clone https://github.com/esafak/commentjson.git \
+    && cd commentjson && python3 setup.py install

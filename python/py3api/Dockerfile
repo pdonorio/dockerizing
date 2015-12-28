@@ -8,6 +8,7 @@ MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@gmail.com>"
 RUN pip install --upgrade Flask \
 	pyjwt flask-restplus flask-sqlalchemy \
 	flask-cors flask-admin \
+	gunicorn \
 	git+git://github.com/mattupstate/flask-security
 	# Security develop, to handle latest flask-login...
 
