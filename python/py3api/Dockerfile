@@ -5,12 +5,22 @@ FROM pdonorio/py3kbase
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@gmail.com>"
 
 # Install the micro framework and important plugins
-RUN pip install --upgrade Flask \
-	pyjwt flask-restplus flask-sqlalchemy \
-	flask-cors flask-admin \
+RUN pip install --upgrade \
+	Flask \
+	flask-restplus flask-sqlalchemy flask-cors flask-admin \
+	# Security develop, to handle latest flask-login... \
+	git+git://github.com/mattupstate/flask-security \
+	# Multithread apis (like uber) \
 	gunicorn \
-	git+git://github.com/mattupstate/flask-security
-	# Security develop, to handle latest flask-login...
+	########################## \
+	# INTERESTING APIs \
+	########################## \
+	rethinkdb \
+	py2neo neomodel \	
+	git+git://github.com/irods/python-irodsclient.git \
+	########################## \
+	# The real Token \
+	pyjwt 
 
 RUN mkdir -p /code
 WORKDIR /code
