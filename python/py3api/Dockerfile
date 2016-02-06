@@ -1,17 +1,26 @@
+#########################################
 # Python3 flask server for REST API backend
-
-# Stack with no hub:
-# $ cd python/py3base; docker build -t pdonorio_py3kbase .
-# $ cd ../py3api; docker build -t pdonorio_py3api .
 
 FROM pdonorio/py3kbase
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@gmail.com>"
 
-# Dependencies?
-
 # Install the micro framework and important plugins
-ADD requirements.txt /opt/apirequ.txt
-RUN pip install -r /opt/apirequ.txt
+RUN pip install --upgrade \
+	Flask \
+	flask-restplus flask-sqlalchemy flask-cors flask-admin \
+	# Security develop, to handle latest flask-login... \
+	git+git://github.com/mattupstate/flask-security \
+	# Multithread apis (like uber) \
+	gunicorn \
+	########################## \
+	# INTERESTING APIs \
+	########################## \
+	rethinkdb \
+	py2neo neomodel \	
+	git+git://github.com/irods/python-irodsclient.git \
+	########################## \
+	# The real Token \
+	pyjwt 
 
 RUN mkdir -p /code
 WORKDIR /code
