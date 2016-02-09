@@ -14,8 +14,7 @@ RUN apt-get update && apt-get install -y wget && apt-get clean
 
 # Prepare script for apt-source
 ENV script /tmp/rethink.sh
-RUN \
-	echo "source /etc/lsb-release" > $script && \
+RUN echo "source /etc/lsb-release" > $script && \
 	echo -n "echo \"deb http://download.rethinkdb.com/apt \$DISTRIB_CODENAME main\" " >> $script && \
 	echo " | tee /etc/apt/sources.list.d/rethinkdb.list" >> $script && \
 	echo "wget -O- http://download.rethinkdb.com/apt/pubkey.gpg | apt-key add - " >> $script
