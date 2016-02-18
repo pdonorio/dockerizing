@@ -27,3 +27,6 @@ RUN wget -q $IRODSDEB \
 
 ###############################
 # OTHERS?
+
+RUN echo "echo 'Run Flask server with the command:'" >> /root/.bashrc
+RUN echo "echo './boot devel'" >> /root/.bashrc
