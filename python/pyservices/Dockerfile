@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y \
 # IRODS
 
 # Environments
-ENV IRODSVERSION 4.1.7
+ENV IRODSVERSION 4.1.8
 ENV IRODSFTP "ftp://ftp.renci.org/pub/irods/releases/$IRODSVERSION/ubuntu14"
 ENV IRODSPKG "icommands"
 ENV IRODSDEB $IRODSFTP/irods-${IRODSPKG}-${IRODSVERSION}-ubuntu14-x86_64.deb
