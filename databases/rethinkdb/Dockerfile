@@ -10,21 +10,24 @@
 FROM ubuntu:15.10
 MAINTAINER "Paolo D'Onorio De Meo" p.donoriodemeo@gmail.com
 
-RUN apt-get update && apt-get install -y wget && apt-get clean
+# Install wget to add the apt repo for rethinkdb
+RUN apt update && apt install -y wget && apt-get clean
 
 # Prepare script for apt-source
-ENV script /tmp/rethink.sh
+ENV script /tmp/myrethink.sh
 RUN echo "source /etc/lsb-release" > $script && \
 	echo -n "echo \"deb http://download.rethinkdb.com/apt \$DISTRIB_CODENAME main\" " >> $script && \
 	echo " | tee /etc/apt/sources.list.d/rethinkdb.list" >> $script && \
-	echo "wget -O- http://download.rethinkdb.com/apt/pubkey.gpg | apt-key add - " >> $script
+	echo "wget -O- http://download.rethinkdb.com/apt/pubkey.gpg | apt-key add - " >> $script && \
+    echo "echo 'Updated sources for RethinkDB ubuntu source'"  >> $script
 
-# Install RethinkDB.
+# Install RethinkDB
 RUN bash $script && \
-	apt-get update && apt-get install -y rethinkdb python-pip && \
-	apt-get clean && rm -rf /tmp/* && rm -rf /var/lib/apt/lists/*
+	apt update && apt upgrade -y && \
+    apt install -y rethinkdb python-pip && \
+	apt-get clean && rm -rf /tmp/*
 
-# Install python driver for rethinkdb
+# Install python driver
 RUN pip install rethinkdb
 
 # Define mountable directories.
