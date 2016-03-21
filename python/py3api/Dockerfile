@@ -7,7 +7,7 @@ MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@gmail.com>"
 # Install the micro framework and important plugins
 RUN pip install --upgrade pip \
 	Flask \
-	flask-restplus flask-sqlalchemy flask-cors flask-admin \
+	flask-restful flask-sqlalchemy flask-cors flask-admin \
 	# Security develop, to handle latest flask-login... \
 	git+git://github.com/mattupstate/flask-security \
 	# Multithread apis (like uber) \
