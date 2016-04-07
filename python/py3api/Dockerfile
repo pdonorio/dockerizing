@@ -7,7 +7,7 @@ MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@gmail.com>"
 # Install the micro framework and important plugins
 RUN pip install --upgrade pip \
     # Tests
-    nose
+    nose \
     # Flask server for HTTP API
 	Flask \
     # Flask main plugins
