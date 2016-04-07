@@ -6,7 +6,11 @@ MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@gmail.com>"
 
 # Install the micro framework and important plugins
 RUN pip install --upgrade pip \
+    # Tests
+    nose
+    # Flask server for HTTP API
 	Flask \
+    # Flask main plugins
 	flask-restful flask-sqlalchemy flask-cors flask-admin \
 	# Security develop, to handle latest flask-login... \
 	git+git://github.com/mattupstate/flask-security \
