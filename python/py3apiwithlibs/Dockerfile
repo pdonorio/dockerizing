@@ -10,3 +10,14 @@ RUN apt-get update && apt-get install -y -q \
     # Images conversion
     imagemagick \
     && apt-get clean
+
+# # RETHINKDB python latest driver?
+# git clone https://github.com/rethinkdb/rethinkdb.git
+# cd rethinkdb/
+# git checkout next
+# ./configure --allow-fetch
+# make --directory ./drivers/python
+# cd drivers/python/
+# python3 setup.py install
+
+# rethinkdb-dump -c rdb -f /code/backup/latest.tar.gz
