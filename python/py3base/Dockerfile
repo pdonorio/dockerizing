@@ -3,8 +3,8 @@
 FROM ubuntu:15.10
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@gmail.com>"
 
-ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
+ENV DEBIAN_FRONTEND noninteractive
 
 # Not essential, but wise to set the lang
 # Note: Users with other languages should set this in their derivative image
@@ -25,16 +25,14 @@ RUN apt-get update && apt-get install -y -q \
     libcurl4-openssl-dev python3-lxml libpq-dev \
     && apt-get clean && rm -rf /tmp/* /var/tmp/*
 
-RUN pip3 install --upgrade setuptools pip
-# http://blog.yhathq.com/posts/11-python-libraries-you-might-not-know.html
-RUN pip install howdoi \
-    wrapt tracestack \
-    plumbum paramiko invoke wget \
+RUN pip3 install --upgrade \
+    setuptools pip ipython \
+    wrapt tracestack wget httpie \
+    plumbum paramiko invoke \
     prettytable \
-    tqdm dill joblib httpie \
+    # http://blog.yhathq.com/posts/11-python-libraries-you-might-not-know.html
+    tqdm dill joblib  \
     snowballstemmer colorama uuid
-    # commentjson
-    # Ipython?
 
 WORKDIR /tmp
 RUN git clone https://github.com/esafak/commentjson.git \

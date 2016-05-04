@@ -8,23 +8,25 @@ MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@gmail.com>"
 RUN pip install --upgrade pip \
     # Tests
     nose nose2 cov-core \
-    # Flask server for HTTP API
+	# Tests coverage (http://nose.readthedocs.org/en/latest/plugins/cover.html)
+	coverage \
+	# Flask server for HTTP API
 	Flask \
-    # Flask main plugins
+	# Flask main plugins
 	flask-restful flask-sqlalchemy flask-cors flask-admin \
-	# Security develop, to handle latest flask-login... \
+	# Security develop, to handle latest flask-login...
 	git+git://github.com/mattupstate/flask-security \
-	# Multithread apis (like uber) \
+	# Multithread apis (like uber)
 	gunicorn \
-	########################## \
-	# INTERESTING APIs \
-	########################## \
+	##########################
+	# INTERESTING APIs
+	##########################
 	rethinkdb \
 	py2neo neomodel \
 	git+git://github.com/irods/python-irodsclient.git \
-    elasticsearch \
-	########################## \
-	# The real Token \
+    	elasticsearch \
+	##########################
+	# The real Token
 	pyjwt
 
 RUN mkdir -p /code
