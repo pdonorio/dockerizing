@@ -1,10 +1,9 @@
 #################################
-## Node js 4 \
+## Node js
 ##  + bower + yeoman + gulp
 #################################
 
 ## Using google as example: https://hub.docker.com/r/google/nodejs/~/dockerfile/
-#FROM ubuntu:15.04
 FROM debian:jessie
 
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@gmail.com>"
@@ -24,6 +23,8 @@ RUN npm install --global npm@latest \
     && npm install --global gulp \
     && npm install --global yo \
     && npm install -g generator-gulp-angular \
+    && npm install -g karma karma-cli karma-chrome-launcher \
+    && npm install -g karma-jasmine jasmine-core jasmine \
     && npm cache clean
 
 # Development user (bower and yeoman do not really work well as root...)
