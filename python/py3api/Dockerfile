@@ -15,7 +15,7 @@ RUN pip install --upgrade pip \
 	# Flask main plugins
 	flask-restful flask-sqlalchemy flask-cors flask-admin \
     # Oauth
-    pyopenssl flask-oauthlib
+    pyopenssl flask-oauthlib \
 	# Security develop, to handle latest flask-login...
 	git+git://github.com/mattupstate/flask-security \
 	# Multithread apis (like uber)
