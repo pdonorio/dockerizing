@@ -14,17 +14,20 @@ RUN pip install --upgrade pip \
 	Flask \
 	# Flask main plugins
 	flask-restful flask-sqlalchemy flask-cors flask-admin \
+    # Oauth
+    pyopenssl flask-oauthlib
 	# Security develop, to handle latest flask-login...
 	git+git://github.com/mattupstate/flask-security \
 	# Multithread apis (like uber)
 	gunicorn \
 	##########################
-	# INTERESTING APIs
+	# SERVICEs APIs
 	##########################
 	rethinkdb \
-	py2neo neomodel \
+    elasticsearch \
+    # Not ready for neo4j 3 at the moment
+	py2neo==2.0.8 neomodel \
 	git+git://github.com/irods/python-irodsclient.git \
-    	elasticsearch \
 	##########################
 	# The real Token
 	pyjwt
