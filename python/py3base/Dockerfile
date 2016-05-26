@@ -20,6 +20,8 @@ RUN apt-get update && apt-get install -y -q \
     # Compiler libs
     build-essential make gcc \
     libssl-dev libffi-dev zlib1g-dev \
+    # requested for openssl in python
+    libffi-dev \
     # Python 3
     python3-dev python3-pip python3-sphinx \
     libzmq3-dev sqlite3 libsqlite3-dev pandoc \
