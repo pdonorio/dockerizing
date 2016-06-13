@@ -11,7 +11,7 @@ RUN pip install --upgrade pip \
 	# Tests coverage (http://nose.readthedocs.org/en/latest/plugins/cover.html)
 	coverage \
 	# Flask server for HTTP API
-	Flask \
+	Flask == 0.11.1 \
 	# Flask main plugins
 	flask-restful flask-sqlalchemy flask-cors flask-admin \
     # Oauth
