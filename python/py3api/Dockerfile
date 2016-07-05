@@ -24,6 +24,8 @@ RUN pip install --upgrade pip \
 	# SERVICEs APIs
 	##########################
 	rethinkdb \
+    redis \
+    celery \
     elasticsearch \
     # Not ready for neo4j 3 at the moment
 	py2neo==2.0.8 neomodel \
