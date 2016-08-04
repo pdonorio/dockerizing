@@ -9,6 +9,5 @@ RUN apk update && apk upgrade && apk add \
     wget https://bootstrap.pypa.io/ez_setup.py -O - | python3 && \
     easy_install-3.5 pip
 
-
 RUN pip --no-cache-dir install --no-cache-dir \
     httpie
