@@ -20,6 +20,8 @@ RUN pip install --upgrade pip \
 	git+git://github.com/mattupstate/flask-security \
 	# Multithread apis (like uber)
 	gunicorn \
+    # Pretty print
+    beeprint \
 	##########################
 	# SERVICEs APIs
 	##########################
