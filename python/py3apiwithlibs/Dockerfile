@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y -q \
     imagemagick \
     && apt-get clean
 
-RUN pip install --upgrade pip timestring openpyxl
+RUN pip install --upgrade pip timestring openpyxl xlrd pandas
 
 # # RETHINKDB python latest driver?
 # git clone https://github.com/rethinkdb/rethinkdb.git
