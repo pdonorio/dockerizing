@@ -1,42 +1,61 @@
 #################################
-## Node js
-##  + bower + yeoman + gulp
-#################################
+# Node js
 
 ## Using google as example: https://hub.docker.com/r/google/nodejs/~/dockerfile/
-FROM debian:jessie
+# FROM debian:jessie
 
+## Using alpine https://github.com/mhart/alpine-node
+FROM mhart/alpine-node:6.7.0
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@gmail.com>"
 
-# Install prerequisites
-RUN apt-get update -y && apt-get install --no-install-recommends -y -q \
-    curl python build-essential git ca-certificates
 ENV TERM xterm
 
-# Install NodeJs 4
-RUN curl --silent --location https://deb.nodesource.com/setup_4.x | bash -
-RUN apt-get install --yes nodejs
+# #################################
+# Install prerequisites
+RUN apk add --no-cache vim wget bash git
 
+# RUN apt-get update -y && apt-get install --no-install-recommends -y -q \
+#     curl python build-essential git ca-certificates
+# # Install NodeJs 4
+# RUN curl --silent --location https://deb.nodesource.com/setup_6.x | bash -
+# RUN apt-get install --yes nodejs
+
+# #################################
+# Bug fix
+# https://github.com/npm/npm/issues/9863#issue-110074625
+
+RUN cd $(npm root -g)/npm \
+  && npm install fs-extra \
+  && sed -i -e s/graceful-fs/fs-extra/ -e s/fs\.rename/fs.move/ ./lib/utils/rename.js
+
+# #################################
 # Install development packages
 RUN npm install --global npm@latest \
     && npm install --global bower \
-    && npm install --global gulp \
-    && npm install --global yo \
-    && npm install -g generator-gulp-angular \
-    && npm install -g karma karma-cli karma-chrome-launcher \
-    && npm install -g karma-jasmine jasmine-core jasmine \
+    && npm install --global bower-installer \
+    # && npm install --global gulp \
+    # # && npm install --global yo \
+    # # && npm install -g generator-gulp-angular \
+    # && npm install -g karma karma-cli karma-chrome-launcher \
+    # && npm install -g karma-jasmine jasmine-core jasmine \
     && npm cache clean
 
+# #################################
 # Development user (bower and yeoman do not really work well as root...)
 ENV MAINDIR /devjs
 ENV HOMEDIR /home/dev
 RUN mkdir -p $MAINDIR
 ENV NEWUSER developer
 RUN mkdir -p $HOMEDIR
-RUN useradd $NEWUSER -d $HOMEDIR \
-    && chown -R $NEWUSER $HOMEDIR && chown -R $NEWUSER $MAINDIR
+
+# RUN useradd $NEWUSER -d $HOMEDIR
+RUN adduser -h $HOMEDIR -D $NEWUSER
+RUN chown -R $NEWUSER $HOMEDIR && chown -R $NEWUSER $MAINDIR
+
 USER $NEWUSER
 WORKDIR $MAINDIR
-
 # Remove bower for asking about statistics...
 RUN yes | bower
+
+# EXPOSE 3000
+# CMD ["node", "index.js"]
