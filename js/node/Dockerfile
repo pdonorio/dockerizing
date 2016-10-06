@@ -31,9 +31,10 @@ RUN cd $(npm root -g)/npm \
 # #################################
 # Install development packages
 RUN npm install --global npm@latest \
+    && npm install --global socket.io \
     && npm install --global bower \
     && npm install --global bower-installer \
-    # && npm install --global gulp \
+    && npm install --global gulp \
     # # && npm install --global yo \
     # # && npm install -g generator-gulp-angular \
     # && npm install -g karma karma-cli karma-chrome-launcher \
