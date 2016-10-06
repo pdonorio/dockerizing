@@ -31,15 +31,14 @@ RUN cd $(npm root -g)/npm \
 # #################################
 # Install development packages
 RUN npm install --global npm@latest \
-    && npm install --global socket.io \
-    && npm install --global bower \
-    && npm install --global bower-installer \
-    && npm install --global gulp \
-    # # && npm install --global yo \
-    # # && npm install -g generator-gulp-angular \
+    && npm install --global \
+        socket.io express rethinkdb \
+        bower bower-installer gulp \
     # && npm install -g karma karma-cli karma-chrome-launcher \
     # && npm install -g karma-jasmine jasmine-core jasmine \
     && npm cache clean
+
+ENV NODE_PATH /usr/lib/node_modules
 
 # #################################
 # Development user (bower and yeoman do not really work well as root...)
