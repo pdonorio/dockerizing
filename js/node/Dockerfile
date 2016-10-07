@@ -31,11 +31,18 @@ RUN cd $(npm root -g)/npm \
 # #################################
 # Install development packages
 RUN npm install --global npm@latest \
+    && npm install --global graceful-fs graceful-fs@latest \
     && npm install --global \
-        socket.io express rethinkdb \
-        bower bower-installer gulp \
-    # && npm install -g karma karma-cli karma-chrome-launcher \
-    # && npm install -g karma-jasmine jasmine-core jasmine \
+        express socket.io \
+        gulp nodemon \
+        rethinkdb \
+        bower \
+        # bower-installer \
+        # bootstrap \
+        angular angular-socket-io \
+        # angular-ui-router \
+        # karma karma-cli karma-chrome-launcher \
+        # karma-jasmine jasmine-core jasmine \
     && npm cache clean
 
 ENV NODE_PATH /usr/lib/node_modules
