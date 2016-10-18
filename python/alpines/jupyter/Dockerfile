@@ -23,16 +23,18 @@ RUN apk update \
     && pip3 --no-cache-dir install --upgrade pip \
         # notebooks
         ipywidgets notebook requests rise \
+        # # rethinkdb driver
+        # rethinkdb \
         ### Lesser-Known Libraries ###
         # https://glyph.twistedmatrix.com/2016/08/attrs.html
         attrs \
         # http://j.mp/lesser_known_libraries
         flit colorama begins \
         pywebview \
-        # psutil \
         watchdog ptpython \
         arrow parsedatetime timestring \
         boltons \
+        # psutil \ # does not work
     #####################
     # Fix notebooks
     && jupyter nbextension enable --py widgetsnbextension \
