@@ -48,15 +48,15 @@ RUN npm install --global npm@latest \
 ENV NODE_PATH /usr/lib/node_modules
 
 # #################################
-# Development user (bower and yeoman do not really work well as root...)
+# Development user
 ENV MAINDIR /devjs
 ENV HOMEDIR /home/dev
 RUN mkdir -p $MAINDIR
+
 ENV NEWUSER developer
 RUN mkdir -p $HOMEDIR
-
-# RUN useradd $NEWUSER -d $HOMEDIR
 RUN adduser -h $HOMEDIR -D $NEWUSER
+# RUN useradd $NEWUSER -d $HOMEDIR
 RUN chown -R $NEWUSER $HOMEDIR && chown -R $NEWUSER $MAINDIR
 
 USER $NEWUSER
