@@ -37,6 +37,8 @@ RUN apk update \
         # psutil \ # does not work
     #####################
     # Fix notebooks
+    && jupyter-nbextension install rise --py --sys-prefix \
+    && jupyter-nbextension enable rise --py --sys-prefix \
     && jupyter nbextension enable --py widgetsnbextension \
     #####################
     # # Alpine packages from 'experimental' edge repository
