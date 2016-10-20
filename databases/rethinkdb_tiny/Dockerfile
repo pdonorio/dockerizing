@@ -40,11 +40,13 @@ RUN echo "Rethinkdb for alpine" \
     && ./configure --allow-fetch LDFLAGS=-lexecinfo \
     # compile and install
     && make -j 4 && make install \
-    && cd .. && rm -rf $RETHINKDB_VERSION \
-    # clean packages used to build the database
-    # note: /usr was up to 900 MB before this command
-    && apk del --purge -r build_dependencies
+    && cd .. \
+    # # remove build?
+    # && rm -rf $RETHINKDB_VERSION \
+    # # clean packages used to build the database ?
+    # && apk del --purge -r build_dependencies \
+    && echo "Completed"
 
 ENV SHELL /bin/bash
-ENTRYPOINT [ 'rethinkdb' ]
-CMD [ '--bind', 'all' ]
+# ENTRYPOINT [ '/bin/ash' ]
+# CMD [ 'rethinkdb', '--bind', 'all' ]
