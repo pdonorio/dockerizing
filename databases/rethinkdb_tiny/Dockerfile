@@ -39,7 +39,7 @@ RUN echo "Rethinkdb for alpine" \
         # && ./configure --allow-fetch
     && ./configure --allow-fetch LDFLAGS=-lexecinfo \
     # compile and install
-    && make && make install \
+    && make -j 2 && make install \
     && cd .. && rm -rf $RETHINKDB_VERSION
 
 ENV SHELL /bin/bash
