@@ -23,7 +23,7 @@ RUN echo "Rethinkdb for alpine" \
     # https://www.rethinkdb.com/docs/build/
 # Normal dependencies
     && apk --no-cache add \
-        # --virtual=build_dependencies \
+        --virtual=build_dependencies \
         g++ bash protobuf-dev protobuf-c m4 \
         python-dev perl nodejs \
         icu-dev make wget curl-dev boost-dev \
@@ -39,7 +39,12 @@ RUN echo "Rethinkdb for alpine" \
         # && ./configure --allow-fetch
     && ./configure --allow-fetch LDFLAGS=-lexecinfo \
     # compile and install
-    && make -j 2 && make install \
-    && cd .. && rm -rf $RETHINKDB_VERSION
+    && make -j 4 && make install \
+    && cd .. && rm -rf $RETHINKDB_VERSION \
+    # clean packages used to build the database
+    # note: /usr was up to 900 MB before this command
+    && apk del --purge -r build_dependencies
 
 ENV SHELL /bin/bash
+ENTRYPOINT [ 'rethinkdb' ]
+CMD [ '--bind', 'all' ]
