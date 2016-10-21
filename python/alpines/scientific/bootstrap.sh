@@ -1,55 +1,64 @@
 #!/bin/bash
 
-# Project
-project="lectures"
-# Basic branch
-branch="science-rome"
-# Basic path
-nbpath="pyscience"
-# Basic repo
-repo="github.com/cineca-scai"
-
-
-# If passed through environment
-if [ -n "$LECTURE_BRANCH" ]; then
-	branch="$LECTURE_BRANCH"
-fi
-
-if [ -n "$LECTURE_PATH" ]; then
-	nbpath="$LECTURE_PATH"
-fi
-
-if [ -n "$LECTURE_REPO" ]; then
-        repo="$LECTURE_REPO"
-fi
-
-if [ -n "$LECTURE_PRJ" ]; then
-        project="$LECTURE_PRJ"
-fi
-
-echo "************************"
-echo "** LECTURES"
-echo "Using: "
-echo ""
-echo "branch[$branch] path[$nbpath] repo[$repo] project[$project]"
-echo ""
-
-# set inside the docker container:
+# This variable is set inside the docker container
 cd $DATADIR
 
-if [ -d $project ]; then
-    echo "Repository already found"
+if [ ! -v NOLECTURES ]; then
+
+    echo "Ready to download material with 'git'"
+
+    # Project
+    project="lectures"
+    # Basic branch
+    branch="science-rome"
+    # Basic path
+    nbpath="pyscience"
+    # Basic repo
+    repo="github.com/cineca-scai"
+
+
+    # If passed through environment
+    if [ -n "$LECTURE_BRANCH" ]; then
+    	branch="$LECTURE_BRANCH"
+    fi
+
+    if [ -n "$LECTURE_PATH" ]; then
+    	nbpath="$LECTURE_PATH"
+    fi
+
+    if [ -n "$LECTURE_REPO" ]; then
+            repo="$LECTURE_REPO"
+    fi
+
+    if [ -n "$LECTURE_PRJ" ]; then
+            project="$LECTURE_PRJ"
+    fi
+
+    echo "************************"
+    echo "** LECTURES"
+    echo "Using: "
+    echo ""
+    echo "branch[$branch] path[$nbpath] repo[$repo] project[$project]"
+    echo ""
+
+    if [ -d $project ]; then
+        echo "Repository already found"
+    else
+        git -c http.sslVerify=false clone https://${repo}/${project}.git
+    fi
+
+    cd $project
+    git checkout $branch
+    git pull origin $branch
+    echo "Done repository init"
+
+    cd $nbpath
 else
-    git -c http.sslVerify=false clone https://${repo}/${project}.git
+    echo "Skipping download of material"
 fi
 
-cd $project
-git checkout $branch
-git pull origin $branch
+# fix permissions
 chown -R $NB_UID $DATADIR 2> /dev/null
-echo "Done repository init"
-
-cd $nbpath
 
 ###############################
 # SET ENVIRONMENT
@@ -67,6 +76,8 @@ exec su $NB_USER -c "jupyter notebook --no-browser --ip 0.0.0.0"
 #####################
 
 ## NORMAL RUN
+
+# docker run --rm -it -v mytest:/data -p 8080:8080 -p 8888:8888 cineca/scientific:alpine
 
 ## CLOUDSCALE RUN
 
