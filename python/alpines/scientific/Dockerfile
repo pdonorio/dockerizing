@@ -41,16 +41,21 @@ RUN echo $CONDA_LINK
 RUN curl -k -o $INSTALL_SCRIPT $CONDA_LINK \
     && /bin/bash $INSTALL_SCRIPT -f -b -p $CONDA_DIR \
     && rm $INSTALL_SCRIPT \
-    && conda install -y jupyter pip \
+    && echo "installing" \
+    && conda install --quiet --yes \
+        jupyter pip \
         pandas scipy matplotlib cython numba seaborn \
     && conda remove -y nbpresent \
     && conda install -y -c damianavila82 rise \
+    && conda install -y -c pydy version_information \
     && conda clean -y --all
 ENV PATH $CONDA_DIR/bin:$PATH
 
 ############################################
 ## Python normal libs
 RUN pip install --upgrade --no-cache-dir pip \
+    # xls files
+    xlrd openpyxl \
     # cool shell than works on top of ipython
     ptpython \
     # cool nosql database with joins, changefeeds and chaining
@@ -82,7 +87,12 @@ RUN mkdir /home/$NB_USER/work && \
     mkdir /home/$NB_USER/.jupyter && \
     mkdir /home/$NB_USER/.local && \
     echo "cacert=/etc/ssl/certs/ca-certificates.crt" > /home/$NB_USER/.curlrc
+COPY notebook_config.py /home/$NB_USER/.jupyter/jupyter_notebook_config.py
 RUN echo "export PATH=$CONDA_DIR/bin:\$PATH" > /home/$NB_USER/.bashrc
+
+# Personal keybindings
+RUN cd /opt/conda/share/jupyter/nbextensions/rise \
+    && wget -q http://j.mp/risecustomkeys -O main.js
 
 ######################################
 ### tini as principal process ###
