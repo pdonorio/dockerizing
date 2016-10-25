@@ -58,6 +58,10 @@ RUN pip install --upgrade --no-cache-dir pip \
     xlrd openpyxl \
     # cool shell than works on top of ipython
     ptpython \
+    # cool sql tool for notebook
+    ipython-sql \
+    # # launch R inside the notebook
+    # rpy2 \
     # cool nosql database with joins, changefeeds and chaining
     rethinkdb \
     # https://glyph.twistedmatrix.com/2016/08/attrs.html
@@ -88,11 +92,17 @@ RUN mkdir /home/$NB_USER/work && \
     mkdir /home/$NB_USER/.local && \
     echo "cacert=/etc/ssl/certs/ca-certificates.crt" > /home/$NB_USER/.curlrc
 COPY notebook_config.py /home/$NB_USER/.jupyter/jupyter_notebook_config.py
-RUN echo "export PATH=$CONDA_DIR/bin:\$PATH" > /home/$NB_USER/.bashrc
 
 # Personal keybindings
 RUN cd /opt/conda/share/jupyter/nbextensions/rise \
     && wget -q http://j.mp/risecustomkeys -O main.js
+
+# Fix matplotlib?
+RUN rm -rf ~/.cache/matplotlib ~/.matplotlib/fontList.cache ~/.cache/fontconfig
+
+# Set executables for this user
+RUN echo "export PATH=$CONDA_DIR/bin:/home/$NB_USER/.local/bin:\$PATH" > /home/$NB_USER/.bashrc
+
 
 ######################################
 ### tini as principal process ###
