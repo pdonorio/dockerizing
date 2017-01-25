@@ -16,30 +16,35 @@ RUN dpkg-reconfigure locales
 
 # Python binary dependencies, developer tools
 RUN apt-get update && apt-get install -y -q \
-    curl vim wget git \
+    curl nano vim wget git \
     # Compiler libs
     build-essential make gcc \
     libssl-dev libffi-dev zlib1g-dev \
     # requested for openssl in python
     libffi-dev \
     # Python 3
-    python3-dev python3-pip python3-sphinx \
+    python3.6-dev python3.6-pip \
+    # extras for python
+    python3-sphinx \
     libzmq3-dev sqlite3 libsqlite3-dev pandoc \
     libcurl4-openssl-dev python3-lxml libpq-dev \
+    # CLEAN
     && apt-get clean && rm -rf /tmp/* /var/tmp/*
 
 # Python essential libs
 RUN pip3 install --upgrade \
+    # the very base
     setuptools pip ipython \
-    wrapt tracestack wget httpie \
+    # utilities
+    attrs wrapt tracestack wget httpie \
+    # cli utilities
     plumbum paramiko invoke \
-    prettytable
+    # pretty print
+    prettytable beeprint \
+    # Very usefull to read JSON files with comments
+    git+https://github.com/esafak/commentjson@master \
 
+# MORE TO BE CONSIDERED...
 # # http://blog.yhathq.com/posts/11-python-libraries-you-might-not-know.html
 # tqdm dill joblib  \
 # snowballstemmer colorama uuid
-
-# Very usefull to read JSON files with comments
-WORKDIR /tmp
-RUN git clone https://github.com/esafak/commentjson.git \
-    && cd commentjson && python3 setup.py install
