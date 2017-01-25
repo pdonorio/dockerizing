@@ -4,34 +4,36 @@
 FROM pdonorio/py3kbase
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@gmail.com>"
 
+# Install dependencies
+RUN apt-get update -qq && apt-get install -y \
+    # nginx for uwsgi
+    nginx \
+    # CLEAN
+    && apt-get clean autoclean && apt-get autoremove -y && \
+    rm -rf /var/lib/cache /var/lib/log
+
 # Install the micro framework and important plugins
 RUN pip install --upgrade pip \
-    # Tests
+    # unittests
     nose nose2 cov-core \
-	# Tests coverage (http://nose.readthedocs.org/en/latest/plugins/cover.html)
+	# coverage http://nose.readthedocs.org/en/latest/plugins/cover.html
 	coverage \
 	# Flask server for HTTP API
-	Flask==0.11.1 \
+	Flask==0.12 \
+    # latest restful because the stable release is pretty outdated
+    git+https://github.com/flask-restful/flask-restful@master \
 	# Flask main plugins
-	flask-restful flask-sqlalchemy flask-cors flask-admin \
-    # Oauth
-    pyopenssl flask-oauthlib \
-	# Security develop, to handle latest flask-login...
-	git+git://github.com/mattupstate/flask-security \
-	# Multithread apis (like uber)
-	gunicorn \
-    # Pretty print
-    beeprint \
+	flask-sqlalchemy flask-cors pyopenssl flask-oauthlib \
+    # swagger validation
+    bravado_core \
 	##########################
 	# SERVICEs APIs
 	##########################
     redis \
     celery \
     elasticsearch elasticsearch-dsl \
-	git+git://github.com/irods/python-irodsclient.git \
-    rethinkdb \
-    # Not ready for neo4j 3 at the moment
-    py2neo==2.0.8 neomodel \
+    # wsgi for production
+    uwsgi uwsgitop \
 	##########################
 	# The real Token
 	pyjwt
