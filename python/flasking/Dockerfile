@@ -4,12 +4,16 @@
 FROM pdonorio/py3api
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@gmail.com>"
 
-# Postgres dev
-#RUN apt-get update && apt-get install -y libpq-dev
-# Gevent dev
-RUN apt-get install libffi-dev
+RUN apt-get update && apt-get install -y -q \
+    # Gevent dev
+    libffi-dev \
+    # Postgres dev
+    # libpq-dev \
+    && apt-get clean autoclean && apt-get autoremove -y && \
+    rm -rf /var/lib/cache /var/lib/log
+
 # Connection via sqlalchemy
-RUN pip install --upgrade \
+RUN pip3 install --upgrade \
     sqlalchemy psycopg2 Werkzeug Flask-SQLAlchemy \
     flask_table Flask-WTF WTForms-Alchemy \
 # MULTITHREAD SERVERS \
