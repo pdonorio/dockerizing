@@ -9,14 +9,22 @@ RUN apt-get update && apt-get install -y -q \
     python2.7-minimal python-pil \
     # Images conversion
     imagemagick \
-    # Nginx server
-    nginx \
-    && apt-get clean
+    # # Multithread apis (like uber)
+    # gunicorn \
+    && apt-get clean autoclean && apt-get autoremove -y && \
+    rm -rf /var/lib/cache /var/lib/log
 
 RUN pip install --upgrade pip \
+    # Security develop, to handle latest flask-login...
+    git+git://github.com/mattupstate/flask-security \
+    # Flask main plugins
+    flask-admin \
+    # More interesting
     timestring openpyxl xlrd pandas \
     # arrow \
-    uwsgi uwsgitop virtualenv
+    virtualenv \
+    # git+git://github.com/irods/python-irodsclient.git \
+    rethinkdb \
 
 # #################################
 # # RETHINKDB python latest driver?
