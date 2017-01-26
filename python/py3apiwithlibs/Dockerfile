@@ -24,7 +24,9 @@ RUN pip install --upgrade pip \
     # arrow \
     virtualenv \
     # git+git://github.com/irods/python-irodsclient.git \
-    rethinkdb
+    rethinkdb \
+    # JSON files with comments
+    git+https://github.com/pdonorio/commentjson@master
 
 # #################################
 # # RETHINKDB python latest driver?
