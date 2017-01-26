@@ -22,7 +22,8 @@ RUN pip3 install --upgrade \
     setuptools cffi tox 'cython>=0.23.4' \
     git+git://github.com/gevent/gevent.git#egg=gevent \
     # JSON files with comments
-    git+https://github.com/pdonorio/commentjson@master
+    git+https://github.com/pdonorio/commentjson@master \
+    flask_login
 
 VOLUME /data
 WORKDIR /data
