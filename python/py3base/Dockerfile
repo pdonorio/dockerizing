@@ -18,6 +18,7 @@ ENV DEBIAN_FRONTEND noninteractive
 
 # Python binary dependencies, developer tools
 RUN apt update && apt upgrade -y && apt install -y -q \
+    aptitude \
     curl nano vim wget git \
     # Compiler libs
     build-essential make gcc \
@@ -25,29 +26,35 @@ RUN apt update && apt upgrade -y && apt install -y -q \
     # requested for openssl in python
     libffi-dev \
     # Python 3
-    python3.6-dev python3-pip \
+    python3.6-dev \
     # extras for python
-    python3-sphinx \
-    libzmq3-dev sqlite3 libsqlite3-dev pandoc \
-    libcurl4-openssl-dev python3-lxml libpq-dev \
+    libzmq3-dev sqlite3 libsqlite3-dev \
+    # python3-lxml \
+    libcurl4-openssl-dev libpq-dev \
+    # python3-sphinx pandoc \
     # CLEAN
     && apt-get clean autoclean && apt autoremove -y && \
     rm -rf /var/lib/cache /var/lib/log
 
+WORKDIR /tmp
+RUN wget -q https://bootstrap.pypa.io/get-pip.py \
+    && python3.6 get-pip.py && rm *.py
+
 # Python essential libs
-RUN pip3 install --upgrade \
+RUN pip3.6 install --upgrade \
     # the very base
-    setuptools pip ipython \
+    setuptools pip lxml ipython \
     # utilities
     attrs wrapt tracestack wget httpie \
     # cli utilities
     plumbum paramiko invoke \
     # pretty print
-    prettytable beeprint \
-    # Very usefull to read JSON files with comments
-    git+https://github.com/vaidik/commentjson@master
+    prettytable beeprint
 
-# MORE TO BE CONSIDERED...
-# # http://blog.yhathq.com/posts/11-python-libraries-you-might-not-know.html
-# tqdm dill joblib  \
-# snowballstemmer colorama uuid
+# # JSON files with comments
+# git+https://github.com/vaidik/commentjson@master
+
+# # MORE TO BE CONSIDERED...
+# # # http://blog.yhathq.com/posts/11-python-libraries-you-might-not-know.html
+# # tqdm dill joblib  \
+# # snowballstemmer colorama
