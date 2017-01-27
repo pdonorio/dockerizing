@@ -4,12 +4,7 @@
 FROM pdonorio/py3api
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@gmail.com>"
 
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US.UTF-8
-ENV LC_ALL en_US.UTF-8
-
 RUN apt-get update && apt-get install -y -q \
-    # Fix utf 8 problem on flask
     language-pack-en \
     # Gevent dev
     libffi-dev \
@@ -17,6 +12,9 @@ RUN apt-get update && apt-get install -y -q \
     # libpq-dev \
     && apt-get clean autoclean && apt-get autoremove -y && \
     rm -rf /var/lib/cache /var/lib/log
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US.UTF-8
+ENV LC_ALL en_US.UTF-8
 
 # Connection via sqlalchemy
 RUN pip3 install --upgrade \
