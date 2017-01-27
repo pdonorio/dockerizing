@@ -4,7 +4,13 @@
 FROM pdonorio/py3api
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@gmail.com>"
 
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US.UTF-8
+ENV LC_ALL en_US.UTF-8
+
 RUN apt-get update && apt-get install -y -q \
+    # Fix utf 8 problem on flask
+    language-pack-en \
     # Gevent dev
     libffi-dev \
     # Postgres dev
