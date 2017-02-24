@@ -15,6 +15,8 @@ RUN apt-get update && apt-get install -y -q \
     rm -rf /var/lib/cache /var/lib/log
 
 RUN pip install --upgrade pip \
+    # Image checks
+    Pillow \
     # Security develop, to handle latest flask-login...
     git+git://github.com/mattupstate/flask-security \
     # Flask main plugins
@@ -22,7 +24,7 @@ RUN pip install --upgrade pip \
     # More interesting
     timestring openpyxl xlrd pandas \
     # arrow \
-    virtualenv \
+    # virtualenv \
     # git+git://github.com/irods/python-irodsclient.git \
     rethinkdb \
     # JSON files with comments
