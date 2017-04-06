@@ -94,5 +94,11 @@ COPY start-singleuser.sh /usr/local/bin/
 COPY jupyter_notebook_config.py /home/$NB_USER/.jupyter/
 RUN chown -R $NB_USER:users /home/$NB_USER/.jupyter
 
+# Personal keybindings
+COPY .config/main.js cd /opt/conda/share/jupyter/nbextensions/rise
+
 # Switch back to jovyan to avoid accidental container runs as root
 USER $NB_USER
+
+RUN pip install --upgrade pip \
+    howdoi beeprint mypy
