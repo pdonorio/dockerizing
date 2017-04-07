@@ -95,7 +95,7 @@ COPY jupyter_notebook_config.py /home/$NB_USER/.jupyter/
 RUN chown -R $NB_USER:users /home/$NB_USER/.jupyter
 
 # Personal keybindings
-COPY .config/main.js cd /opt/conda/share/jupyter/nbextensions/rise
+COPY .config/main.js /opt/conda/share/jupyter/nbextensions/rise
 
 # Switch back to jovyan to avoid accidental container runs as root
 USER $NB_USER

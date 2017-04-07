@@ -16,7 +16,7 @@ if [ -z $LECTURE_BRANCH ]; then
 fi
 if [ -z $LECTURE_PATH ]; then
     # LECTURE_PATH="material/spark_r_scala"
-    LECTURE_PATH="material"
+    LECTURE_PATH="material/2017"
 fi
 
 echo "LECTURES:"
