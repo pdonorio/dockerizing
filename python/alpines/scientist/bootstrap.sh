@@ -15,7 +15,8 @@ if [ ! -v NOLECTURES ]; then
     # Basic branch
     branch="scientificpy"
     # Basic path
-    nbpath="notebooks"
+    nbpath="material/2017"
+    # nbpath="material"
 
     # If passed through environment
     if [ -n "$LECTURE_BRANCH" ]; then
@@ -41,19 +42,22 @@ if [ ! -v NOLECTURES ]; then
     echo "branch[$branch] path[$nbpath] repo[$repo] project[$project]"
     echo ""
 
-    if [ -d $project ]; then
+    if [ -d $main_dir ]; then
         echo "Repository already found"
     else
         git -c http.sslVerify=false clone https://${repo}/${project}.git $main_dir
+        if [ "$?" != "0" ]; then
+            echo "Failed to retrieve repo"
+        fi
     fi
 
-    cd $main_dir
-    # cd $project
-    git checkout $branch
-    git pull origin $branch
-    echo "Done repository init"
-
-    cd $nbpath
+    if [ -d $main_dir ]; then
+        cd $main_dir
+        git checkout $branch
+        git pull origin $branch
+        echo "Done repository init"
+        cd $nbpath
+    fi
 else
     echo "Skipping download of material"
 fi
