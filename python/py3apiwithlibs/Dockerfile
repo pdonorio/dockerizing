@@ -28,7 +28,9 @@ RUN pip install --upgrade pip \
     # git+git://github.com/irods/python-irodsclient.git \
     rethinkdb \
     # JSON files with comments
-    git+https://github.com/pdonorio/commentjson@master
+    git+https://github.com/pdonorio/commentjson@master \
+    # latest
+    peewee gspread oauth2client
 
 # #################################
 # # RETHINKDB python latest driver?
