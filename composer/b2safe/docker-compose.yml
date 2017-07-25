@@ -1,0 +1,59 @@
+version: '3'
+
+############
+networks:
+  mynet:
+
+############
+volumes:
+  irodsetc:
+    driver: local
+  irodshome:
+    driver: local
+  irodsvar:
+    driver: local
+  irodscerts:
+    driver: local
+  sqldata:
+    driver: local
+
+############
+services:
+  postgres:
+    image: postgres:9.6
+    volumes:
+      - sqldata:/var/lib/postgresql/data
+      - ./builds/postgres/pgs_init.sh:/docker-entrypoint-initdb.d/setup-my-schema.sh
+    environment:
+      POSTGRES_USER: rods
+      POSTGRES_PASSWORD: massimo
+      POSTGRES_DBS: ICAT
+    networks:
+      mynet:
+        aliases:
+          - mydb
+
+  icat:
+    # B2safe instance on irods
+    build: ./builds/icat
+    hostname: rodserver
+    # command: sleep infinity
+    environment:
+      POSTGRES_HOST: mydb
+      POSTGRES_USER: rods
+      POSTGRES_PASSWORD: massimo
+      IRODS_HOST: rodserver
+      IRODS_PORT: 1247
+      IRODS_ZONE: INGV
+      IRODS_DB: ICAT
+      IRODS_USER: rods
+      IRODS_PASSWORD: massimo
+    networks:
+      mynet:
+
+    volumes:
+      - irodsetc:/etc
+      - irodshome:/home/irods
+      - irodsvar:/var/lib/irods
+      - irodscerts:/opt/certificates
+      # - ../submodules/builds_base/icat/extra_b2safe.sh:/docker-entrypoint.d/b2safe.sh

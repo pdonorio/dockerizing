@@ -1,0 +1,11 @@
+
+# EACL entry #1|
+
+access_id_CA      X509         '/C=DE/L=Juelich/O=FZJ/OU=JSC/CN=test.ca'
+
+pos_rights        globus        CA:sign
+
+cond_subjects     globus       '"/C=DE/L=Juelich/O=FZJ/OU=JSC/*"'
+
+# end of EACL
+

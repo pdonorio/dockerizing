@@ -1,0 +1,11 @@
+
+# EACL entry #1|
+
+access_id_CA      X509         '/C=EU/O=EUDAT/OU=B2ACCESS/CN=SLCS-CA'
+
+pos_rights        globus        CA:sign
+
+cond_subjects     globus       '"/C=EU/O=EUDAT/OU=B2ACCESS/*"'
+
+# end of EACL
+
