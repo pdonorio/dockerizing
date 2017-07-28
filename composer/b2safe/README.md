@@ -48,4 +48,5 @@ You still could:
 
 - add more B2SAFE integration, see [this example Dockerfile](https://github.com/EUDAT-B2STAGE/docker-images/blob/master/images/b2safe/Dockerfile#L5).
 - understand more from EUDAT training and federate another container, see [this documentation](https://github.com/EUDAT-Training/B2SAFE-B2STAGE-Training)
+- check the official documentation to federate iRODS, follow [this link](https://docs.irods.org/4.2.1/system_overview/federation/)
 
