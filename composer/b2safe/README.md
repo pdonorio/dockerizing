@@ -15,7 +15,7 @@ docker-compose version 1.14.0, build c7bdf9e
 Clone this repo:
 ```
 $ git clone https://github.com/pdonorio/dockerizing.git 
-$ cd dockerizing/composer/b2stage
+$ cd dockerizing/composer/b2safe
 ```
 
 ---
