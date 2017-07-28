@@ -41,15 +41,17 @@ services:
     environment:
       POSTGRES_HOST: mydb
       POSTGRES_USER: rods
-      POSTGRES_PASSWORD: massimo
+      POSTGRES_PASSWORD: thisisapasswordtobechanged
       IRODS_HOST: rodserver
       IRODS_PORT: 1247
       IRODS_ZONE: INGV
       IRODS_DB: ICAT
       IRODS_USER: rods
-      IRODS_PASSWORD: massimo
+      IRODS_PASSWORD: thisisapasswordtobechanged
     networks:
       mynet:
+    ports:
+      - 1247:1247
 
     volumes:
       - irodsetc:/etc
