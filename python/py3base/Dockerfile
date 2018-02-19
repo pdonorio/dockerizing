@@ -1,6 +1,7 @@
 
 # A base for python 3 projects
-FROM ubuntu:16.10
+# FROM ubuntu:16.10
+FROM ubuntu:17.10
 # FROM ubuntu:16.04
 MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@gmail.com>"
 
@@ -8,17 +9,12 @@ ENV TERM=xterm-256color
 # ENV TERM xterm
 ENV DEBIAN_FRONTEND noninteractive
 
-# Not essential, but wise to set the lang
-# RUN apt update && apt install -y language-pack-en
-# ENV LANG en_US.UTF-8
-# ENV LANGUAGE en_US.UTF-8
-# ENV LC_ALL en_US.UTF-8
-# RUN locale-gen en_US.UTF-8
-# RUN dpkg-reconfigure locales
 
 # Python binary dependencies, developer tools
 RUN apt update && apt upgrade -y && apt install -y -q \
     aptitude \
+    # Not essential, but wise to set the lang, for UTF8 / ASCII problems
+    language-pack-en \
     curl nano vim wget git \
     # Compiler libs
     build-essential make gcc \
@@ -35,6 +31,11 @@ RUN apt update && apt upgrade -y && apt install -y -q \
     # CLEAN
     && apt-get clean autoclean && apt autoremove -y && \
     rm -rf /var/lib/cache /var/lib/log
+
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US.UTF-8
+ENV LC_ALL en_US.UTF-8
+RUN dpkg-reconfigure locales
 
 WORKDIR /tmp
 RUN wget -q https://bootstrap.pypa.io/get-pip.py \
