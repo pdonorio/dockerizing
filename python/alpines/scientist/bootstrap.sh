@@ -58,6 +58,10 @@ if [ ! -v NOLECTURES ]; then
         echo "Done repository init"
         cd $nbpath
     fi
+
+    # trust external material
+    exec su $NB_USER -c "jupyter trust */*ipynb"
+
 else
     echo "Skipping download of material"
 fi
@@ -72,5 +76,4 @@ export IPYTHON=1
 #####################
 # BOOT SERVICES
 
-#trust and launch
-exec su $NB_USER -c "jupyter trust */*ipynb && jupyter notebook --no-browser --ip 0.0.0.0"
+exec su $NB_USER -c "jupyter notebook --no-browser --ip 0.0.0.0"

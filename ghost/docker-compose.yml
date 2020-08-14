@@ -1,0 +1,106 @@
+######################################
+# Working ghost 3 dockerized blog, with:
+# - dedicated mysql container
+# - possible adminer for mysql
+# - automatic SSL via letsencrypt
+#   (through traefik)
+######################################
+
+version: '3.7'
+
+volumes:
+  ghostdata:
+    driver: local
+  mysqldata:
+    driver: local
+
+networks:
+  my_net:
+
+services:
+
+  web:
+    image: ghost:${GHOST_VERSION}-alpine
+    # restart: always
+    environment:
+      NODE_ENV: production
+      url: https://${DOMAIN}
+      database__client: mysql
+      database__connection__host: db
+      database__connection__user: root
+      database__connection__password: $DB_PASSWORD
+      database__connection__database: ghost
+      mail__transport: SMTP
+      mail__options__service: Mailgun
+      # mail__options__host: smtp.eu.mailgun.org
+      mail__options__auth__user: postmaster@mg.${DOMAIN}
+      mail__options__auth__pass: ${MAILGUN_PASSWORD}
+    depends_on:
+      - db
+    networks:
+      my_net:
+    volumes:
+      - ghostdata:/var/lib/ghost/content
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=my_net"
+      - "traefik.frontend.rule=Host:${DOMAIN}"
+      - "traefik.port=2368"
+      - "traefik.protocol=http"
+
+  db:
+    image: mysql:${MYSQL_VERSION}
+    # restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: $DB_PASSWORD
+    volumes:
+      - mysqldata:/var/lib/mysql
+    networks:
+      my_net:
+    expose:
+      - 3306
+    labels:
+      - "traefik.enable=false"
+
+  # adminer:
+  #   image: adminer
+  #   # restart: always
+  #   networks:
+  #     my_net:
+  #   ports:
+  #     - 8080:8080
+  #   depends_on:
+  #     - db
+
+  traefik:
+    image: traefik:alpine
+    command:
+        #- --web
+        - --entryPoints=Name:http Address::80 Redirect.EntryPoint:https
+        - --entryPoints=Name:https Address::443 TLS
+        - --defaultEntryPoints=http,https
+        - --docker
+        - --docker.endpoint=unix:///var/run/docker.sock
+        # - --docker.domain=domain.localhost
+        - --docker.watch=true
+        - --acme
+        - --acme.storage=/etc/traefik/acme/acme.json
+        - --acme.email=info@${DOMAIN}
+        - --acme.OnHostRule=true
+        - --acme.entryPoint=https
+        - --acme.httpChallenge.entrypoint=http
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=false"
+    networks:
+      - my_net
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./config/acme:/etc/traefik/acme
+    ports:
+      - "80:80"
+      - "443:443"
+
+# https://kennethandersen.com/ghost-docker/
+# https://medium.com/@ackaymaz/traefik-as-reverse-proxy-for-docker-services-5d828d03d08e
+# https://jonnev.se/traefik-with-docker-and-lets-encrypt/

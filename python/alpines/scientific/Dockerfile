@@ -32,7 +32,7 @@ ENV CONDA_DIR /opt/conda
 RUN mkdir -p $CONDA_DIR
 ENV PATH $CONDA_DIR/bin:$PATH
 ENV CONDA_VER 4.1.11
-ENV CONTINUUM_REPO https://repo.continuum.io/
+ENV CONTINUUM_REPO https://repo.continuum.io
 
 ENV CONDA_LINK $CONTINUUM_REPO/miniconda/Miniconda3-${CONDA_VER}-Linux-x86_64.sh
 ENV INSTALL_SCRIPT /tmp/conda.sh
@@ -43,36 +43,34 @@ RUN curl -k -o $INSTALL_SCRIPT $CONDA_LINK \
     && rm $INSTALL_SCRIPT \
     && echo "installing" \
     && conda install --quiet --yes \
-        jupyter pip \
-        pandas scipy matplotlib cython numba seaborn \
-    && conda remove -y nbpresent \
-    && conda install -y -c damianavila82 rise \
-    && conda install -y -c pydy version_information \
-    && conda clean -y --all
+        mkl="11.3.3" python="3.6.1" \
+        jupyter pip pandas scipy matplotlib cython numba seaborn \
+    # && conda remove -y nbpresent \
+    # && conda install -y -c damianavila82 rise \
+    # && conda install -y -c pydy version_information \
+    && conda clean -y --all \
+    && echo "completed"
 ENV PATH $CONDA_DIR/bin:$PATH
 
 ############################################
 ## Python normal libs
 RUN pip install --upgrade --no-cache-dir pip \
+    # slides and versioning
+    rise version_information \
     # xls files
     xlrd openpyxl \
     # cool shell than works on top of ipython
-    ptpython \
+    ptpython bpython \
     # cool sql tool for notebook
     ipython-sql \
-    # # launch R inside the notebook
-    # rpy2 \
-    # cool nosql database with joins, changefeeds and chaining
-    rethinkdb \
     # https://glyph.twistedmatrix.com/2016/08/attrs.html
     attrs \
     # http://j.mp/lesser_known_libraries
-    flit colorama begins \
-    pywebview \
-    watchdog ptpython \
-    arrow parsedatetime timestring \
-    # psutil \ # does not work
-    boltons
+    flit colorama begins
+
+RUN echo "fix rise" \
+    && jupyter nbextension install rise --py --sys-prefix \
+    && jupyter nbextension enable rise --py --sys-prefix
 
 ############################################
 ## add user
@@ -91,11 +89,10 @@ RUN mkdir /home/$NB_USER/work && \
     mkdir /home/$NB_USER/.jupyter && \
     mkdir /home/$NB_USER/.local && \
     echo "cacert=/etc/ssl/certs/ca-certificates.crt" > /home/$NB_USER/.curlrc
-COPY notebook_config.py /home/$NB_USER/.jupyter/jupyter_notebook_config.py
+# COPY notebook_config.py /home/$NB_USER/.jupyter/jupyter_notebook_config.py
 
 # Personal keybindings
-RUN cd /opt/conda/share/jupyter/nbextensions/rise \
-    && wget -q http://j.mp/risecustomkeys -O main.js
+COPY .config/main.js /opt/conda/share/jupyter/nbextensions/rise
 
 # Fix matplotlib?
 RUN rm -rf ~/.cache/matplotlib ~/.matplotlib/fontList.cache ~/.cache/fontconfig

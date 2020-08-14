@@ -254,8 +254,7 @@ function Revealer(config) {
 
     keyboard: {
     13: null, // Enter disabled
-    // 27: null, // ESC disabled
-    27: function() {$('#help_b,#exit_b').fadeToggle();},
+    27: null, // ESC disabled
     38: 'prev', // up arrow
     40: 'next', // down arrow
     66: null, // b, black pause disabled, use period or forward slash
@@ -268,7 +267,7 @@ function Revealer(config) {
     80: null, // p, up disable
     // 83: null, // s, notes, but not working because notes is a plugin
     87: function() {Reveal.toggleOverview();}, // w, toggle overview
-    // 188: function() {$('#help_b,#exit_b').fadeToggle();},
+    188: function() {$('#help_b,#exit_b').fadeToggle();},
     },
 
     // Optional libraries used to extend on reveal.js

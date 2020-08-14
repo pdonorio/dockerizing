@@ -1,0 +1,49 @@
+#################################
+## Node js 6
+##  + TypeScript (ES6) + Angularjs2
+#################################
+
+## Using google as example: https://hub.docker.com/r/google/nodejs/~/dockerfile/
+FROM debian:jessie
+
+MAINTAINER "Paolo D'Onorio De Meo <p.donoriodemeo@gmail.com>"
+
+# Install prerequisites
+RUN apt-get update -y && apt-get install --no-install-recommends -y -q \
+    curl python build-essential git ca-certificates
+ENV TERM xterm
+
+# Install NodeJs 4
+RUN curl --silent --location https://deb.nodesource.com/setup_6.x | bash -
+RUN apt-get install --yes nodejs
+
+# # Install development packages
+# RUN echo "Installing libraries with npm" \
+#     # npm install --global npm@latest \
+#     && npm install --global bower \
+#     && npm install --global gulp \
+#     # && npm install --global yo \
+#     # && npm install -g generator-gulp-angular \
+#     # && npm install -g karma karma-cli karma-chrome-launcher \
+#     # && npm install -g karma-jasmine jasmine-core jasmine \
+#     && npm cache clean
+
+# # source: https://github.com/AngularClass/retain-app
+# RUN echo "Libraries for angularjs 2 projects" \
+#     && npm install --global typescript webpack webpack-dev-server tslint rxjs
+
+RUN npm install --global typescript
+
+# Development user (bower and yeoman do not really work well as root...)
+ENV MAINDIR /devjs
+ENV HOMEDIR /home/dev
+RUN mkdir -p $MAINDIR
+ENV NEWUSER developer
+RUN mkdir -p $HOMEDIR
+RUN useradd $NEWUSER -d $HOMEDIR \
+    && chown -R $NEWUSER $HOMEDIR && chown -R $NEWUSER $MAINDIR
+USER $NEWUSER
+WORKDIR $MAINDIR
+
+# # Remove bower for asking about statistics...
+# RUN yes | bower
