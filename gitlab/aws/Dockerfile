@@ -1,6 +1,6 @@
 FROM docker:latest
 
-RUN apk --update --no-cache add python3 docker-compose \
+RUN apk --update --no-cache add python3 py3-pip docker-compose \
     bash curl openssl openssh-client groff
 
 RUN pip3 install --no-cache-dir --quiet awscli
