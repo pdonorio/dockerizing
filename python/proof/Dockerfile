@@ -4,7 +4,7 @@ RUN apk update \
     && pip3 --no-cache-dir install --upgrade pip
 
 # NOTE: may need a dedicated image for slow wheels:
-# spacy (nltk?), pandas, cryptography (gensim? blis?)
+# spacy (nltk?), pandas, cryptography (gensim? blis?), lxml
 
 WORKDIR /tmp
 COPY requirements.txt .
