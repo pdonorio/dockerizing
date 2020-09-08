@@ -17,3 +17,6 @@ RUN curl -fsSL https://raw.githubusercontent.com/helm/helm/master/scripts/get-he
     && helm version && echo helm installed
 # && helm plugin install https://github.com/hypnoglow/helm-s3.git \
 # && helm plugin list \
+
+ENV BUILDX_VERSION=0.4.2
+RUN wget https://github.com/docker/buildx/releases/download/v${BUILDX_VERSION}/buildx-v${BUILDX_VERSION}.linux-amd64 -O buildx
