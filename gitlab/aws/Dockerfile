@@ -22,6 +22,7 @@ RUN curl -fsSL $HELM_URL/master/scripts/get-helm-3 | bash \
 # && helm plugin install https://github.com/hypnoglow/helm-s3.git \
 # && helm plugin list \
 
-ENV BUILDX_VERSION=0.4.2
-RUN wget https://github.com/docker/buildx/releases/download/v${BUILDX_VERSION}/buildx-v${BUILDX_VERSION}.linux-amd64 \
-    -O buildx && chmod +x ./buildx
+ENV BUILDX_URL https://github.com/docker/buildx
+ENV BUILDX_VERSION 0.4.2
+ENV BUILDX_TAG v${BUILDX_VERSION}/buildx-v${BUILDX_VERSION}.linux-amd64
+RUN wget $BUILDX_URL/releases/download/$BUILDX_TAG -O buildx && chmod +x ./buildx
